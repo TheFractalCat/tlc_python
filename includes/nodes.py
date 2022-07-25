@@ -92,7 +92,7 @@ class	TLCNode:
 
 
 
-class	TLCNilNode:
+class	TLCNilNode(TLCNode):
 	"""
 	a Nil node is used to represent null pointers inside the TLCVM
 	"""
