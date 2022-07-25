@@ -31,4 +31,4 @@ Source Paths=
 [FilesU - Source Code]
 0=myIncludes.py
 1=includes+AFw-stack.py
-2=nodes.py
+2=includes+AFw-nodes.py
