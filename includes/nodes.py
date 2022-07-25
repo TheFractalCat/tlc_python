@@ -11,7 +11,7 @@ class	TLCNode:
 
 	def	__init__(self):
 		"""
-		constructor for the Node base class - currently it does nothing
+		constructor for the class - currently it does nothing
 		"""
 		pass
 
@@ -89,3 +89,48 @@ class	TLCNode:
 		default is False
 		"""
 		return False
+
+
+
+class	TLCNilNode:
+	"""
+	a Nil node is used to represent null pointers inside the TLCVM
+	"""
+
+	def	__init__(self):
+		"""
+		constructor for the class - currently it does nothing
+		"""
+		pass
+
+
+
+
+
+	def	__repr__(self):
+		"""
+		provides a printable view of the object
+		"""
+		return	f'<Nil Node>'
+
+
+
+
+
+	def	isNil(self):
+		"""
+		True if this node represents a Nil Pointer, or False otherwise
+		we return True
+		"""
+		return	True
+
+
+
+
+
+	def	isPointer(self):
+		"""
+		True if this node represents a pointer, or False otherwise
+		we return True
+		"""
+		return True
