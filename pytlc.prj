@@ -22,10 +22,13 @@ Symbol Paths=
 Working Directory=
 Selected Debugger=0
 Source Paths=
-[FilesU]
-0=includes+AFw-stack.py
-1=myIncludes.py
 [GroupU]
 0=Meta Files
+1=Source Code
 [FilesU - Meta Files]
 0=.gitignore
+1=README.md
+[FilesU - Source Code]
+0=myIncludes.py
+1=includes+AFw-stack.py
+2=nodes.py
