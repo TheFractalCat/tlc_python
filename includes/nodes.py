@@ -18,3 +18,74 @@ class	TLCNode:
 
 
 
+
+	def	__repr__(self):
+		"""
+		provides a printable view of the object
+		"""
+		return	f'<TLCNode at {hex(id(self))}>'
+
+
+
+
+
+	def	isInvalid(self):
+		"""
+		True if this is not a valid TLCNode, or False otherwise
+		default is False
+		"""
+		return	False
+
+
+
+
+
+	def	isError(self):
+		"""
+		True is this is an ErrorNode of some kind, or False otherwise
+		default is False
+		"""
+		return	False
+
+
+
+
+	def	isNil(self):
+		"""
+		True if this node represents a Nil Pointer, or False otherwise
+		default is False
+		"""
+		return	False
+
+
+
+
+
+	def	isPointer(self):
+		"""
+		True if this node represents a pointer, or False otherwise
+		default is False
+		"""
+		return False
+
+
+
+
+
+	def	isInstruction(self):
+		"""
+		True if this node is a TLC Opcode, or False otherwise
+		default is False
+		"""
+		return	False
+
+
+
+
+
+	def	isData(self):
+		"""
+		True if this node contains data of any kind, or False otherwise
+		default is False
+		"""
+		return False
