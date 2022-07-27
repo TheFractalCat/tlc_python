@@ -92,6 +92,19 @@ class	TLCNode:
 
 
 
+
+
+	def	isDict(self):
+		"""
+		True if this node is a TLC Dictionary, or False otherwise
+		default is False
+		"""
+		return False
+
+
+
+
+
 class	TLCNilNode(TLCNode):
 	"""
 	a Nil node is used to represent null pointers inside the TLCVM
