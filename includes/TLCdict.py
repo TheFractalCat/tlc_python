@@ -20,6 +20,7 @@ class	TLCDict:
 		self._names = dict()
 		self._values = list()
 
+#	add a default value
 		self.addEntry("", None)
 
 
