@@ -15,6 +15,7 @@ class	TLCDict:
 		_names - dictionary used to cross-reference names to indexes within the values
 		_values - list that stores the associated values tied to a name
 
+		an optional default value and/or key can be specified, using named parameters
 		"""
 
 		self._names = dict()
@@ -69,3 +70,13 @@ class	TLCDict:
 			return	value
 		else:
 			return	(None, None, None)
+
+
+
+
+
+	def	getDefaultEntry(self):
+		"""
+		Returns the default dictionary entry; a tuple of the form (name, index, value)
+		"""
+		return self._values[0]
