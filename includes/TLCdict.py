@@ -9,7 +9,7 @@ class	TLCDict:
 	the basic named storage used by TLC - it allows access to a value by both name and index
 	"""
 
-	def	__init__(self):
+	def	__init__(self, *, defaultValue=None, defaultKey=None):
 		"""
 		constructor for the class - initialized all internal storage needed by the class
 		_names - dictionary used to cross-reference names to indexes within the values
@@ -21,7 +21,21 @@ class	TLCDict:
 		self._values = list()
 
 #	add a default value
-		self.addEntry("", None)
+		if	defaultKey is not None:
+			defaultKey = defaultKey.casefold()
+			self._names[defaultKey] = 0
+
+		self._values.append((defaultKey, 0, defaultValue))
+
+
+
+
+
+	def	__repr__(self):
+		"""
+		provides a printable view of the object
+		"""
+		return	f'<TLCDict at {hex(id(self))}=Names{self._names};Values{self._values}>'
 
 
 
@@ -31,9 +45,10 @@ class	TLCDict:
 		"""
 		adds an entry to the TLCDict and returns the dictionary index
 		"""
-		self._values.append(value)
-		index = len(self._values)-1
-		self._names[key.casefold()] = index
+		key = key.casefold()
+		index = len(self._values)
+		self._values.append((key, index, value))
+		self._names[key] = index
 
 		return	index
 
@@ -43,16 +58,14 @@ class	TLCDict:
 
 	def	getEntry(self, target):
 		"""
-		looks up a dictionary entry and returns a tuple of the form (index, value)
-		returns (None, None) if no match is found
+		looks up a dictionary entry and returns a tuple of the form (name, index, value)
+		returns (None, None, None) if no match is found
 		"""
 		target = target.casefold()
 
 		if	target in self._names:
 			index = self._names[target]
 			value = self._values[index]
+			return	value
 		else:
-			index = None
-			value = None
-
-		return	(index, value)
+			return	(None, None, None)
