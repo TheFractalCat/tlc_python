@@ -2,10 +2,12 @@
 this is the module that defines my basic stack for TLC
 """
 
+
 class	myStack(list):
 	"""
 	the actual stack class used by TLC
 	"""
+
 
 	def	__init__(self):
 		"""
@@ -37,14 +39,29 @@ class	myStack(list):
 
 
 
+	def	__iter__(self):
+		"""
+		provides a means of iterating through the stack from the top down
+		"""
+		i = 0
+
+		while i < len(self):
+			v = self[i]
+			i += 1
+			yield v
+
+
+
+
+
 	def	__repr__(self):
 		"""
 		prints the stack in a meaningful manner with "top" to the left, going deeper to the right
 		"""
 		sep = ""
 		rep = "["
-		for i in range(0,len(self)):
-			rep = rep.rstrip() + sep + f'{self[i]}'
+		for v in self:
+			rep = rep.rstrip() + sep + f'{v}'
 			sep = "/"
 
 		return	rep.rstrip()+"]"
