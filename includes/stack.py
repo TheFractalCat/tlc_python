@@ -55,6 +55,16 @@ class	myStack():
 
 
 
+	def	__len__(self):
+		"""
+		returns the current size of the stack
+		"""
+		return	len(self._list)
+
+
+
+
+
 	def	__repr__(self):
 		"""
 		prints the stack in a meaningful manner with "top" to the left, going deeper to the right
