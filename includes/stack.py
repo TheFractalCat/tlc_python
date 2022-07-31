@@ -3,7 +3,7 @@ this is the module that defines my basic stack for TLC
 """
 
 
-class	myStack(list):
+class	myStack():
 	"""
 	the actual stack class used by TLC
 	"""
@@ -11,9 +11,10 @@ class	myStack(list):
 
 	def	__init__(self):
 		"""
-		constructor; currently does nothing
+		constructor; initializes the list used to store stack values
 		"""
-		super().__init__()
+		self._list = list()
+
 
 
 
@@ -23,7 +24,7 @@ class	myStack(list):
 		"""
 		reverses indexing so top of stack is 0
 		"""
-		return	super().__getitem__(-(key+1))
+		return	self._list.__getitem__(-(key+1))
 
 
 
@@ -33,7 +34,7 @@ class	myStack(list):
 		"""
 		reverses indexed assignment so top of stack is 0
 		"""
-		return	super().__setitem__(-(key+1), newValue)
+		return	self._list.__setitem__(-(key+1), newValue)
 
 
 
@@ -45,7 +46,7 @@ class	myStack(list):
 		"""
 		i = 0
 
-		while i < len(self):
+		while i < len(self._list):
 			v = self[i]
 			i += 1
 			yield v
@@ -74,7 +75,7 @@ class	myStack(list):
 		"""
 		clears the stack of all data and returns a self reference
 		"""
-		super().clear()
+		self._list.clear()
 
 		return self
 
@@ -86,7 +87,7 @@ class	myStack(list):
 		"""
 		pushs a new value on to the stack and returns a self reference
 		"""
-		self.append(newValue)
+		self._list.append(newValue)
 		return	self
 
 
@@ -97,7 +98,7 @@ class	myStack(list):
 		"""
 		removes the top value on the stack and returns it
 		"""
-		return	self.pop()
+		return	self._list.pop()
 
 
 
@@ -136,12 +137,11 @@ class	myStack(list):
 
 
 
-	def	duplicate(self,offset=1):
+	def	duplicate(self,offset=0):
 		"""
 		duplicates a value on the stack and returns a self reference
-
-		offset can be supplied if value to be duplicates is not the TopOfStack
+		offset can be supplied if value to be duplicated is not the TopOfStack
 		"""
-		self.push(self[offset-1])
+		self.push(self[offset])
 
 		return	self

@@ -36,7 +36,7 @@ class	TLCDict:
 		"""
 		provides a printable view of the object
 		"""
-		return	f'<TLCDict at {hex(id(self))}=Names{self._names};Values{self._values}>'
+		return	f'<{type(self).__name__} at {hex(id(self))}=Names{self._names};Values{self._values}>'
 
 
 
