@@ -25,13 +25,16 @@ Source Paths=
 [GroupU]
 0=Meta Files
 1=Source Code
+2=Source Code - pytlc
+3=Source Code - components
 [FilesU - Meta Files]
 0=.gitignore
 1=README.md
-[FilesU - Source Code]
-0=myIncludes.py
-1=includes+AFw-stack.py
-2=includes+AFw-nodes.py
-3=D:+AFw-Switchkit+AFw-Projects.2020+AFw-Projects+AFw-python+AFw-pytlc+AFw-includes+AFw-TLCdict.py
-4=+AF8AXw-main+AF8AXw-.py
-5=+AF8AXw-init+AF8AXw-.py
+[FilesU - Source Code - pytlc]
+0=+AF8AXw-main+AF8AXw-.py
+1=+AF8AXw-init+AF8AXw-.py
+[FilesU - Source Code - components]
+0=components+AFwAXwBf-init+AF8AXw-.py
+1=components+AFw-nodes.py
+2=components+AFw-stack.py
+3=D:+AFw-Switchkit+AFw-Projects.2020+AFw-Projects+AFw-python+AFw-pytlc+AFw-components+AFw-dict.py

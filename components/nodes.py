@@ -1,6 +1,13 @@
 """
-This modeule defines the basic structure and function of a TLC Node - the basic form of storage used by the TLCVM
+This module defines the basic structure and function of a TLC Node - the basic form of storage used by the TLCVM
 """
+
+
+
+#	-----------
+#	export list
+#	-----------
+__all__ = ['TLCNode', 'TLCNilNode']
 
 
 

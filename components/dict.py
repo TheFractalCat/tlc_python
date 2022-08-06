@@ -4,6 +4,13 @@ This module defines the basic structure and function of the TLC Dictionary - the
 
 
 
+#	-----------
+#	export list
+#	-----------
+__all__ = ['TLCDict']
+
+
+
 class	TLCDict:
 	"""
 	the basic named storage used by TLC - it allows access to a value by both name and index
