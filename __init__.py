@@ -1,3 +1,12 @@
 print('Adding pytlc')
 
-from .components import *
+from ._includes import *
+
+
+
+#	-----------
+#	export list
+#	-----------
+__all__ = [
+	*_includes.__all__,
+	]

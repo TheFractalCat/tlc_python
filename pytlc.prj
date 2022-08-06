@@ -27,14 +27,17 @@ Source Paths=
 1=Source Code
 2=Source Code - pytlc
 3=Source Code - components
+4=Source Code - +AF8-includes
 [FilesU - Meta Files]
 0=.gitignore
 1=README.md
 [FilesU - Source Code - pytlc]
 0=+AF8AXw-main+AF8AXw-.py
 1=+AF8AXw-init+AF8AXw-.py
-[FilesU - Source Code - components]
-0=components+AFwAXwBf-init+AF8AXw-.py
-1=components+AFw-nodes.py
-2=components+AFw-stack.py
-3=D:+AFw-Switchkit+AFw-Projects.2020+AFw-Projects+AFw-python+AFw-pytlc+AFw-components+AFw-dict.py
+[FilesU - Source Code - +AF8-includes]
+0=+AF8-includes+AFwAXwBf-init+AF8AXw-.py
+[FilesU]
+0=+AF8-includes+AFw-components+AFwAXwBf-init+AF8AXw-.py
+1=+AF8-includes+AFw-components+AFw-dict.py
+2=+AF8-includes+AFw-components+AFw-nodes.py
+3=+AF8-includes+AFw-components+AFw-stack.py
