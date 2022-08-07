@@ -39,6 +39,66 @@ class	TLCDict:
 
 
 
+
+	def	__getitem__(self,  key):
+		"""
+		allows indexed access to the dictionary
+		"""
+		if	key >= len(self._values) or key < 0:
+			return	(None, None, None)
+
+		return	self._values.__getitem__(key)
+
+
+
+
+
+	def	__setitem__(self,  key, newValue):
+		"""
+		allows indexed assignments to the dictionary
+		"""
+		name, index, _ = self[key]
+		return self._values.__setitem__(key, (name, index, newValue))
+
+
+
+
+
+	def	__call__(self, target):
+		"""
+		allowed name searches in the dictionary in a simple format
+		"""
+		return	self.getEntry(target)
+
+
+
+
+
+	def	__iter__(self):
+		"""
+		provides a means of iterating through the dictionary
+		"""
+		i = 0
+
+		while i < len(self._values):
+			v = self[i]
+			i += 1
+			yield v
+
+
+
+
+
+	def	__len__(self):
+		"""
+		returns the current size of the dictionary
+		"""
+		return	len(self._values)
+
+
+
+
+
 	def	__repr__(self):
 		"""
 		provides a printable view of the object
