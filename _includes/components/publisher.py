@@ -55,6 +55,20 @@ class Publisher:
 
 
 
+	def	unsubscribeFromAll(self, additionalData=None):
+		"""
+		unsubscribe all subscribers on the subscription list
+		"""
+		for	subscriber in list(self._subscribers.values()):
+			if	additionalData is None:
+				subscriber[0].unsubscribeFrom(self)
+			else:
+				subscriber[0].unsubscribeFrom(self, additionalData=additionalData)
+
+
+
+
+
 	def publish(self, additionalData=None):
 		"""
 		Publish event to all subscribers
@@ -173,5 +187,7 @@ class Subscriber:
 
 
 	def __repr__(self):
-		"""Return a representation of the Subscriber"""
+		"""
+		Return a representation of the Subscriber
+		"""
 		return super(type(self), self).__repr__()
