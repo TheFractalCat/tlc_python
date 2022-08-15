@@ -36,8 +36,9 @@ Source Paths=
 1=+AF8AXw-init+AF8AXw-.py
 [FilesU - Source Code - +AF8-includes]
 0=+AF8-includes+AFwAXwBf-init+AF8AXw-.py
-[FilesU]
+[FilesU - Source Code - components]
 0=+AF8-includes+AFw-components+AFwAXwBf-init+AF8AXw-.py
 1=+AF8-includes+AFw-components+AFw-dict.py
 2=+AF8-includes+AFw-components+AFw-nodes.py
 3=+AF8-includes+AFw-components+AFw-stack.py
+4=+AF8-includes+AFw-components+AFw-publisher.py
