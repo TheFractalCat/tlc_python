@@ -7,7 +7,7 @@ this is the module that adds publishing capabilty to objects
 #	-----------
 #	export list
 #	-----------
-# __all__ = ['Publisher']
+__all__ = ['Publisher', 'Subscriber']
 
 
 
@@ -21,12 +21,12 @@ class Publisher:
 
 
 
-	def __init__(self, id=None):
+	def __init__(self, publisherID=None):
 		"""
 		Constructor - builds the empty subscriber list
 		"""
 		self._subscribers = dict()
-		self._id = hex(id(self)) if id is None else id
+		self._id = hex(id(self)) if publisherID is None else publisherID
 
 
 
@@ -48,7 +48,7 @@ class Publisher:
 		"""
 		Remove a subscriber from the subscription list
 		"""
-		if ((client := self._subscribers.pop(subscriber, None))) is not None:
+		if ((client := self._subscribers.pop(hex(id(subscriber)), None))) is not None:
 			client[0]._deliver('u', self, client[1], additionalData)
 
 
@@ -99,12 +99,12 @@ class Subscriber:
 		Subscribe to a publisher's offering
 		"""
 		if	publisher.getID() not in self._subscriptions:
-				self._subscriptions[publisher.getID()] = (publisher, self.deliver)
+			self._subscriptions[publisher.getID()] = (publisher, self.deliver)
 
-			if	additionalData is None
-				publisher.subscribe(self)
-			else:
-				publisher.subscribe(self, additionalData=additionalData)
+		if	additionalData is None:
+			publisher.subscribe(self)
+		else:
+			publisher.subscribe(self, additionalData=additionalData)
 
 
 
@@ -115,7 +115,7 @@ class Subscriber:
 		"""
 		if	publisher.getID() in self._subscriptions:
 
-			if	additionalData is None
+			if	additionalData is None:
 				publisher.unsubscribe(self)
 			else:
 				publisher.unsubscribe(self, additionalData=additionalData)
@@ -124,12 +124,12 @@ class Subscriber:
 
 
 
-	def unsubscribeFromAll(self *, additionalData=None):
+	def unsubscribeFromAll(self, *, additionalData=None):
 		"""
 		Unsubscribe from all publishers
 		"""
 		for publisher in self._subscriptions.values():
-			if	additionalData is None
+			if	additionalData is None:
 				publisher[0].unsubscribe(self)
 			else:
 				publisher[0].unsubscribe(self, additionalData=additionalData)
@@ -145,8 +145,8 @@ class Subscriber:
 		this extracts the handler from the subscription dictionary and calls it with all data
 		"""
 
-		if	(publisherData := self._subscriptions.get(publisher.getID(), None)) is not None:
-				publisherData[1](type, publisher, subscriberData, publisherData)
+		if	(publisherEntry := self._subscriptions.get(publisher.getID(), None)) is not None:
+				publisherEntry[1](transactionType, publisher, subscriberData, publisherData)
 
 
 
@@ -166,7 +166,7 @@ class Subscriber:
 		"""
 		replace the Delivery handler with another method
 		"""
-		self._subscriptions[publisher.getI()] = (publisher, handler)
+		self._subscriptions[publisher.getID()] = (publisher, handler)
 
 
 
