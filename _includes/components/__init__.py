@@ -5,6 +5,13 @@ print("Loading components")
 
 
 
+#	==========================
+#	exceptions used by the TLC
+#	==========================
+from .tlc_exceptions import *
+
+
+
 #	============================
 #	publisher/subscriber classes
 #	============================
@@ -37,6 +44,7 @@ from .nodes	import *
 #	list of all names exported for use
 #	==================================
 __all__ = [
+	*tlc_exceptions.__all__,
 	*publisher.__all__,
 	*stack.__all__,
 	*dict.__all__,
