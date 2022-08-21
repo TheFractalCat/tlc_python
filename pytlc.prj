@@ -42,3 +42,5 @@ Source Paths=
 2=+AF8-includes+AFw-components+AFw-nodes.py
 3=+AF8-includes+AFw-components+AFw-stack.py
 4=+AF8-includes+AFw-components+AFw-publisher.py
+[FilesU - Source Code]
+0=scratchpad.py
