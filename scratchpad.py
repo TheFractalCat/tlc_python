@@ -42,3 +42,10 @@ class classB(classA):
 		print('initializing classB')
 
 
+
+
+
+try:
+	raise pytlc.TLC_POINTER_OUT_OF_RANGE
+except pytlc.TLCException as e:
+	print(e.getMessage(), e.getExceptionID())
