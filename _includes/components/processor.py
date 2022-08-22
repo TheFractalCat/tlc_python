@@ -88,7 +88,8 @@ class TLCProcessor:
 		response += TLCProcessor.Show("\nReturnStack", self.RS,prefixLength=21, suffixLength=30)
 		response += TLCProcessor.Show("\nIterationStack", self.IS, prefixLength=21, suffixLength=30)
 		response += TLCProcessor.Show("\nSuspenseStack", self.SS, prefixLength=21, suffixLength=30)
-		response += TLCProcessor.Show("\nExceptionState", self.ES, prefixLength=21, suffixLength=30)
+
+		response += TLCProcessor.Show("\n\nExceptionState", self.ES, prefixLength=22, suffixLength=30)
 
 		return response
 
