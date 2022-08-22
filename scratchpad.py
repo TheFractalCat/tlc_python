@@ -49,3 +49,17 @@ try:
 	raise pytlc.TLC_POINTER_OUT_OF_RANGE
 except pytlc.TLCException as e:
 	print(e.getMessage(), e.getExceptionID())
+
+
+
+
+
+
+def	Show(name, value):
+	name = "{:s} ".format(name)
+	name = "{:.<20s}".format(name)
+
+	value = ": {:s}".format(str(value))
+	value = "{:.>20s}".format(value)
+
+	return "{:s}{:s}".format(name, value)
