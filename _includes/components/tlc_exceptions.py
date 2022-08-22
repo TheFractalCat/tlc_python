@@ -97,3 +97,6 @@ __all__.append("TLC_POINTER_OUT_OF_RANGE")
 
 TLC_INVALID_OBJECTID 		= TLCException('Invalid ObjectID')
 __all__.append("TLC_INVALID_OBJECTID")
+
+TLC_INVALID_STACKINDEX 		= TLCException('Invalid Stack Index')
+__all__.append("TLC_INVALID_STACKINDEX")

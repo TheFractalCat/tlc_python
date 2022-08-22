@@ -40,6 +40,13 @@ from .nodes	import *
 
 
 
+#	=====================================
+#	the virtual processor used by the TLC
+#	=====================================
+from .processor	import *
+
+
+
 #	==================================
 #	list of all names exported for use
 #	==================================
@@ -48,5 +55,6 @@ __all__ = [
 	*publisher.__all__,
 	*stack.__all__,
 	*dict.__all__,
-	*nodes.__all__
+	*nodes.__all__,
+	*processor.__all__,
 	]
