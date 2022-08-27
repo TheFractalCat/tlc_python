@@ -77,7 +77,10 @@ class TLCProcessor:
 #	--------------------------
 		self._exceptionState = TLC_OK
 
-
+#	---------------------
+#	and the ObjectCounter
+#	---------------------
+		self._objectCounter = TLCPointer()
 
 
 
@@ -89,6 +92,8 @@ class TLCProcessor:
 		response += TLCProcessor.Show("\nReturnStack", self.RS,prefixLength=21, suffixLength=30)
 		response += TLCProcessor.Show("\nIterationStack", self.IS, prefixLength=21, suffixLength=30)
 		response += TLCProcessor.Show("\nSuspenseStack", self.SS, prefixLength=21, suffixLength=30)
+
+		response += TLCProcessor.Show("\n\nObjectCounter", self.OC, prefixLength=22, suffixLength=30)
 
 		response += TLCProcessor.Show("\n\nExceptionState", self.ES, prefixLength=22, suffixLength=30)
 
@@ -160,3 +165,21 @@ class TLCProcessor:
 		set the new value for Exception State
 		"""
 		self._exceptionState = value
+
+
+
+	@property
+	def OC(self):
+		"""
+		OC is the object counter
+		"""
+		return	self._objectCounter
+
+
+
+	@OC.setter
+	def OC(self, value):
+		"""
+		assign a new value to the object counter
+		"""
+		self._objectCounter.set(value)
