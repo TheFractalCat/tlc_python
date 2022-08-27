@@ -15,21 +15,28 @@ from .tlc_exceptions import *
 #	============================
 #	publisher/subscriber classes
 #	============================
-from .publisher	import *
+from .publisher import *
 
 
 
 #	====================
 #	the basic stack used
 #	====================
-from .stack	import *
+from .stack import *
 
 
 
 #	===========================
 #	the indexed dictionary used
 #	===========================
-from .dict	import *
+from .dict import *
+
+
+
+#	============
+#	TLC pointers
+#	============
+from .tlc_pointers import *
 
 
 
@@ -52,6 +59,7 @@ from .processor	import *
 #	==================================
 __all__ = [
 	*tlc_exceptions.__all__,
+	*tlc_pointers.__all__,
 	*publisher.__all__,
 	*stack.__all__,
 	*dict.__all__,

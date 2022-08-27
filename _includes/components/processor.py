@@ -9,6 +9,7 @@ this module defines the basic TLC processor used by the tlcVM
 #	==============
 from .stack import *
 from .tlc_exceptions import *
+from .tlc_pointers import *
 
 
 
