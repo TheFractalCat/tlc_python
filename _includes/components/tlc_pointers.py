@@ -35,11 +35,19 @@ class TLCPointer:
 
 
 
-
+#	-----------
+#	constructor
+#	-----------
 	def	__init__(self, pointerValue=None):
 		"""
 		constructor for building a pointer
 		"""
+#	define the list that represents all instance storage
+		self._variables = [None,None,None,None,]
+
+#	and the backup values
+		self._oldvalues = self._variables.copy()
+
 #	first initialize instance variables ...
 		self._nullState = True
 		self._invalidState = False
@@ -52,15 +60,17 @@ class TLCPointer:
 
 
 
-
+#	------------------------------
+#	method used for representation
+#	------------------------------
 	def	__repr__(self):
 		"""
 		provides a string version of the pointer
 		"""
-		if	self._invalidState:
+		if	self.isInvalid():
 			return "Invalid Pointer"
 
-		if	self._nullState:
+		if	self.isNull():
 			return "NULL"
 
 		return	"{0:04d}|{1:d}".format(self.objectID, self.offset)
@@ -69,6 +79,98 @@ class TLCPointer:
 
 
 
+#	---------------------------------------------
+#	property mappings from variable list to names
+#	---------------------------------------------
+	@property
+	def _objectID(self):
+		"""
+		used to store the objectID associated with the pointer
+		"""
+		return	self._variables[0]
+
+
+
+	@_objectID.setter
+	def _objectID(self, value):
+		"""
+		assign a new object ID to the pointer
+		"""
+		self._variables[0] = value
+
+
+
+	@property
+	def _offset(self):
+		"""
+		used to store the offset associated with the pointer
+		"""
+		return	self._variables[1]
+
+
+
+	@_offset.setter
+	def _offset(self, value):
+		"""
+		assign a new offset to the pointer
+		"""
+		self._variables[1] = value
+
+
+
+	@property
+	def _nullState(self):
+		"""
+		used to indicate whether the pointer is null or not
+		"""
+		return	self._variables[2]
+
+
+
+	@_nullState.setter
+	def _nullState(self, value):
+		"""
+		change the null status of the pointer
+		"""
+		self._variables[2] = value
+
+
+
+	@property
+	def _invalidState(self):
+		"""
+		used to indicate whether the pointer is invalid or not
+		"""
+		return	self._variables[3]
+
+
+
+	@_invalidState.setter
+	def _invalidState(self, value):
+		"""
+		change the validity state of the pointer
+		"""
+		self._variables[3] = value
+
+
+
+
+#	------------------------------------------
+#	commit changes to the pointer and snapshot
+#	------------------------------------------
+	def	commit(self):
+		if	self._oldvalues != self._variables:
+			self._oldvalues = self._variables.copy()
+
+			print("Committed")
+
+
+
+
+
+#	----------------------------------------------
+#	externally visible properties and state checks
+#	----------------------------------------------
 	@property
 	def objectID(self):
 		"""
@@ -84,54 +186,6 @@ class TLCPointer:
 		the offset portion of the pointer
 		"""
 		return	self._offset
-
-
-
-	def	set(self, pointerValue):
-		"""
-		assigns a value to the pointer, based on the value supplied
-		None represents a null pointer
-		tuple of the form (object ID, offset)
-		integer = object ID implies offset = 0
-		"""
-#	save the old value
-		oldValue = (self.objectID, self.offset)
-
-#	is it a null pointer?
-		if pointerValue is None:
-			self._nullState = True
-			self._invalidState = False
-			self._objectID = None
-			self._offset = None
-
-#	is it a tuple pair?
-		elif type(pointerValue) is tuple:
-			self._nullState = False
-			self._invalidState = False
-			self._objectID = pointerValue[0]
-			self._offset = pointerValue[1]
-
-#	how about another pointer?
-		elif type(pointerValue) is TLCPointer:
-			self._nullState = pointerValue._nullState
-			self._invalidState = pointerValue._invalidState
-			self._objectID = pointerValue._objectID
-			self._offset = pointerValue._offset
-
-#	must be an object ID
-		else:
-			self._nullState = False
-			self._invalidState = False
-			self._objectID = pointerValue
-			self._offset = 0
-
-#	make sure we're in range
-		if	not self.isNull() and (self.objectID < 0 or self.offset < 0):
-			self.makeInvalid()
-
-#	see if it changed
-		if	oldValue != (self.objectID, self.offset):
-			pass
 
 
 
@@ -156,8 +210,61 @@ class TLCPointer:
 		"""
 		mark the pointer as invalid
 		"""
-		if	(not self.isInvalid())
-			self._invalidState = True
+		self._invalidState = True
+		self.commit()
+
+		return	self
+
+
+
+#	--------------------------------------------------------
+#	method used to update the value and state of the pointer
+#	--------------------------------------------------------
+	def	set(self, pointerValue):
+		"""
+		assigns a value to the pointer, based on the value supplied
+		None represents a null pointer
+		tuple of the form (object ID, offset)
+		integer = object ID implies offset = 0
+		"""
+		try:
+#	is it a null pointer?
+			if pointerValue is None:
+				self._nullState = True
+				self._invalidState = False
+				self._objectID = None
+				self._offset = None
+
+#	is it a tuple pair?
+			elif type(pointerValue) is tuple:
+				self._nullState = False
+				self._invalidState = False
+				self._objectID = pointerValue[0]
+				self._offset = pointerValue[1]
+
+#	how about another pointer?
+			elif type(pointerValue) is TLCPointer:
+				self._nullState = pointerValue._nullState
+				self._invalidState = pointerValue._invalidState
+				self._objectID = pointerValue._objectID
+				self._offset = pointerValue._offset
+
+#	must be an object ID
+			else:
+				self._nullState = False
+				self._invalidState = False
+				self._objectID = pointerValue
+				self._offset = 0
+
+#	make sure we're in range
+			if	not self.isNull() and (self.objectID < 0 or self.offset < 0):
+				self.makeInvalid()
+
+#	check for an update state
+		finally:
+			self.commit()
+
+
 
 
 
@@ -213,4 +320,35 @@ class TLCPointer:
 			self.set((self.objectID, self.offset - value))
 
 		return self
+
+
+
+
+
+#	=================
+#	logical operators
+#	=================
+	def	__bool__(self):
+		"""
+		returns True if the pointer is good, or False otherwise
+		"""
+		return self.isNull()
+
+
+
+	def	__eq__(self, target):
+		"""
+		compares two pointers and returns equality
+		"""
+		if	target is None:
+			if	self.isNull():
+				return True
+			return False
+
+		elif type(target) is not TLCPointer:
+			return False
+
+		else:
+			return self._variables == target._variables
+
 

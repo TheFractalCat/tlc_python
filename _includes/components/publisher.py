@@ -55,7 +55,7 @@ class Publisher:
 
 
 
-	def	unsubscribeFromAll(self, additionalData=None):
+	def	unsubscribeAll(self, additionalData=None):
 		"""
 		unsubscribe all subscribers on the subscription list
 		"""
