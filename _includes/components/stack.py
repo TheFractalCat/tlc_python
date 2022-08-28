@@ -4,19 +4,28 @@ this is the module that defines my basic stack for TLC
 
 
 
-#	-----------
+#	===========
 #	export list
-#	-----------
+#	===========
 __all__ = ['TLCStack']
 
 
 
+
+
+#	==================================
+#	the basic stack used by the TLC vm
+#	==================================
 class	TLCStack():
 	"""
 	the actual stack class used by TLC
 	"""
 
 
+
+#	===========
+#	constructor
+#	===========
 	def	__init__(self):
 		"""
 		constructor; initializes the list used to store stack values
@@ -27,7 +36,9 @@ class	TLCStack():
 
 
 
-
+#	=====================================================================
+#	magic methods used to make indexing on the stack work the way we want
+#	=====================================================================
 	def	__getitem__(self,  key):
 		"""
 		reverses indexing so top of stack is 0
@@ -47,7 +58,9 @@ class	TLCStack():
 
 
 
-
+#	========================================
+#	magic methods for implementing iteration
+#	========================================
 	def	__iter__(self):
 		"""
 		provides a means of iterating through the stack from the top down
@@ -72,7 +85,9 @@ class	TLCStack():
 
 
 
-
+#	==============================
+#	used to pretty-print the stack
+#	==============================
 	def	__repr__(self):
 		"""
 		prints the stack in a meaningful manner with "top" to the left, going deeper to the right
@@ -88,7 +103,9 @@ class	TLCStack():
 
 
 
-
+#	==========================
+#	stack manipulation methods
+#	==========================
 	def	clear(self):
 		"""
 		clears the stack of all data and returns a self reference

@@ -4,18 +4,28 @@ This module defines the basic structure and function of the TLC Dictionary - the
 
 
 
-#	-----------
+#	===========
 #	export list
-#	-----------
+#	===========
 __all__ = ['TLCDict']
 
 
 
+
+
+#	================================================================================
+#	the basic dictionary used throughout the TLC - it allows access by name or index
+#	================================================================================
 class	TLCDict:
 	"""
 	the basic named storage used by TLC - it allows access to a value by both name and index
 	"""
 
+
+
+#	===========
+#	constructor
+#	===========
 	def	__init__(self, *, defaultValue=None, defaultKey=None):
 		"""
 		constructor for the class - initialized all internal storage needed by the class
@@ -39,7 +49,9 @@ class	TLCDict:
 
 
 
-
+#	==================================================================================
+#	magic methods used to provide "clean" access to the dictionary by name or by index
+#	==================================================================================
 	def	__getitem__(self,  key):
 		"""
 		allows indexed access to the dictionary
@@ -73,7 +85,9 @@ class	TLCDict:
 
 
 
-
+#	===============================================
+#	magic methods for iteration over the dictionary
+#	===============================================
 	def	__iter__(self):
 		"""
 		provides a means of iterating through the dictionary
@@ -98,7 +112,9 @@ class	TLCDict:
 
 
 
-
+#	==============================================
+#	method used for pretty-printing the dictionary
+#	==============================================
 	def	__repr__(self):
 		"""
 		provides a printable view of the object
@@ -108,7 +124,9 @@ class	TLCDict:
 
 
 
-
+#	===============================
+#	dictionary entry/update methods
+#	===============================
 	def	addEntry(self, key, value):
 		"""
 		adds an entry to the TLCDict and returns the dictionary index

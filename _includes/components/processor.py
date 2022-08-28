@@ -25,22 +25,32 @@ __all__ = [
 
 
 
-
+#	=======================================
+#	the virtual processor used by the TLCvm
+#	=======================================
 class TLCProcessor:
 	"""
 	the virtual processor used by the TLC
 	"""
 
-#	=============================
-#	class variables and constants
-#	=============================
+
+
+#	======================================
+#	class variables, constants and methods
+#	======================================
 	MAX_STACKS = 5
 
 
 
 
+#	-----------------------------------------------------------
+#	class method used for "pretty-printing" the processor state
+#	-----------------------------------------------------------
 	@classmethod
 	def	Show(cls, name, value,*,prefixLength=30, suffixLength=20):
+		"""
+		class method used for "pretty-printing" the processor state
+		"""
 		name = "{:s} ".format(name)
 		name = "{0:.<{1}s}".format(name, prefixLength)
 

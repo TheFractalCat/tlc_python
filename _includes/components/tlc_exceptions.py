@@ -5,9 +5,9 @@ this module defines all exceptions used by the TLC
 
 
 
-#	-----------
+#	===========
 #	export list
-#	-----------
+#	===========
 __all__ = [
 			'TLCException',
 		]
@@ -15,22 +15,28 @@ __all__ = [
 
 
 
-
+#	====================================
+#	my style of exceptions used by TLCvm
+#	====================================
 class TLCException(Exception):
 	"""
 	The base class used for defining exceptions used by the TLC
 	"""
 
+
+
 #	====================
 #	class variables used
 #	====================
-#	used in gerating exceptionIDs for TLCExceptions
+#	used in generating exceptionIDs for TLCExceptions
 	_nextExceptionID = 10001
 
 
 
 
-
+#	===========
+#	constructor
+#	===========
 	def	__init__(self,message,*,ExceptionID=None):
 		"""
 		constructor used to build the TLCExceptions.
@@ -47,12 +53,15 @@ class TLCException(Exception):
 		self._message = message
 
 #	and trigger baseclass constructor
-		super().__init__(self.getMessage())
+		super().__init__(self.messageText)
 
 
 
 
 
+#	==============================================
+#	convert the exception to a nice representation
+#	==============================================
 	def	__repr__(self):
 		"""
 		provides a printable form of the exception
@@ -63,17 +72,19 @@ class TLCException(Exception):
 
 
 
-	def	getMessage(self):
+#	properties used to get exception details
+	@property
+	def	messageText(self):
 		"""
 		returns the message associated with the exception
 		"""
-		return	f'{self._message} ({self.getExceptionID()})'
+		return	f'{self._message} ({self.exceptionID})'
 
 
 
 
-
-	def	getExceptionID(self):
+	@property
+	def	exceptionID(self):
 		"""
 		returns the numeric exceptionID assigned to the exception
 		"""
