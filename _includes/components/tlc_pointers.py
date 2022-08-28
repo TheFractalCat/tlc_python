@@ -7,6 +7,7 @@ this module defines the behavior of the pointers used by the TLCvm
 #	==============
 #	imports needed
 #	==============
+from .publisher import *
 
 
 
@@ -43,7 +44,7 @@ class TLCPointer:
 		constructor for building a pointer
 		"""
 #	define the list that represents all instance storage
-		self._variables = [None,None,None,None,]
+		self._variables = [None]*4
 
 #	and the backup values
 		self._oldvalues = self._variables.copy()
@@ -53,6 +54,8 @@ class TLCPointer:
 		self._invalidState = False
 		self._objectID = None
 		self._offset = None
+		self._publisher = None
+		self._subscriber = None
 
 #	... then assign the value passed it
 		self.set(pointerValue)
@@ -154,7 +157,6 @@ class TLCPointer:
 
 
 
-
 #	------------------------------------------
 #	commit changes to the pointer and snapshot
 #	------------------------------------------
@@ -162,7 +164,8 @@ class TLCPointer:
 		if	self._oldvalues != self._variables:
 			self._oldvalues = self._variables.copy()
 
-			print("Committed")
+			if	self._publisher is not None:
+				self._publisher.publish(additionalData=self)
 
 
 
@@ -217,6 +220,30 @@ class TLCPointer:
 
 
 
+	@property
+	def	publisher(self):
+		"""
+		returns the publisher associated with the pointer, generating one if needed
+		"""
+		if	self._publisher is None:
+			self._publisher = Publisher()
+
+		return self._publisher
+
+
+
+	@property
+	def	subscriber(self):
+		"""
+		returns the subscriber associated with the pointer, generating one if needed
+		"""
+		if	self._subscriber is None:
+			self._subscriber = Subscriber()
+
+		return self._subscriber
+
+
+
 #	--------------------------------------------------------
 #	method used to update the value and state of the pointer
 #	--------------------------------------------------------
@@ -244,10 +271,7 @@ class TLCPointer:
 
 #	how about another pointer?
 			elif type(pointerValue) is TLCPointer:
-				self._nullState = pointerValue._nullState
-				self._invalidState = pointerValue._invalidState
-				self._objectID = pointerValue._objectID
-				self._offset = pointerValue._offset
+				self._variables = pointerValue._variables.copy()
 
 #	must be an object ID
 			else:

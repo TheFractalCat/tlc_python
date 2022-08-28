@@ -9,8 +9,8 @@ this module defines the basic TLC processor used by the tlcVM
 #	==============
 from .stack import *
 from .tlc_exceptions import *
+from .publisher import *
 from .tlc_pointers import *
-
 
 
 
@@ -40,7 +40,7 @@ class TLCProcessor:
 
 
 	@classmethod
-	def	Show(cls, name, value,*,prefixLength=20, suffixLength=20):
+	def	Show(cls, name, value,*,prefixLength=30, suffixLength=20):
 		name = "{:s} ".format(name)
 		name = "{0:.<{1}s}".format(name, prefixLength)
 
@@ -52,7 +52,23 @@ class TLCProcessor:
 
 
 
+#	============================
+#	subscription handlers needed
+#	============================
+	def	subhandler1(self, transactionType, publisher, subscriberData, publisherData):
+		"""
+		subscription handler used for keeping pointers in sync
+		"""
 
+		if transactionType == 'p':
+			subscriberData.set(publisherData)
+
+
+
+
+#	===========
+#	constructor
+#	===========
 	def	__init__(self):
 		"""
 		constructor for building the virtual processor
@@ -77,32 +93,51 @@ class TLCProcessor:
 #	--------------------------
 		self._exceptionState = TLC_OK
 
-#	---------------------
-#	and the ObjectCounter
-#	---------------------
+#	----------------------
+#	and the ObjectCounters
+#	----------------------
 		self._objectCounter = TLCPointer()
+		self._effectiveObjectCounter = TLCPointer()
+
+#	------------------------
+#	now set up subscriptions
+#	------------------------
+		self.EOC.subscriber.subscribeTo(self.OC.publisher, additionalData=self.EOC)
+
+#	------------
+#	and handlers
+#	------------
+		self.EOC.subscriber.setDeliveryHandler(self.OC.publisher,self.subhandler1)
 
 
 
+
+
+#	========================
+#	processor representation
+#	========================
 	def	__repr__(self):
 		"""
 		provides a string version of the VM state
 		"""
 		response =  TLCProcessor.Show("DataStack", self.DS, suffixLength=30)
-		response += TLCProcessor.Show("\nReturnStack", self.RS,prefixLength=21, suffixLength=30)
-		response += TLCProcessor.Show("\nIterationStack", self.IS, prefixLength=21, suffixLength=30)
-		response += TLCProcessor.Show("\nSuspenseStack", self.SS, prefixLength=21, suffixLength=30)
+		response += TLCProcessor.Show("\nReturnStack", self.RS,prefixLength=31, suffixLength=30)
+		response += TLCProcessor.Show("\nIterationStack", self.IS, prefixLength=31, suffixLength=30)
+		response += TLCProcessor.Show("\nSuspenseStack", self.SS, prefixLength=31, suffixLength=30)
 
-		response += TLCProcessor.Show("\n\nObjectCounter", self.OC, prefixLength=22, suffixLength=30)
+		response += TLCProcessor.Show("\n\nObjectCounter", self.OC, prefixLength=32, suffixLength=30)
+		response += TLCProcessor.Show("\nEffectiveObjectCounter", self.EOC, prefixLength=31, suffixLength=30)
 
-		response += TLCProcessor.Show("\n\nExceptionState", self.ES, prefixLength=22, suffixLength=30)
+		response += TLCProcessor.Show("\n\nExceptionState", self.ES, prefixLength=32, suffixLength=30)
 
 		return response
 
 
 
 
-
+#	===============================
+#	processor component definitions
+#	===============================
 	def	stack(self, stackIndex):
 		"""
 		allows an indexed reference to a particular stack
@@ -183,3 +218,21 @@ class TLCProcessor:
 		assign a new value to the object counter
 		"""
 		self._objectCounter.set(value)
+
+
+
+	@property
+	def EOC(self):
+		"""
+		EOC is the effective object counter
+		"""
+		return	self._effectiveObjectCounter
+
+
+
+	@EOC.setter
+	def EOC(self, value):
+		"""
+		assign a new value to the effective object counter
+		"""
+		self._effectiveObjectCounter.set(value)

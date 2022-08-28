@@ -57,9 +57,21 @@ except pytlc.TLCException as e:
 
 def	Show(name, value):
 	name = "{:s} ".format(name)
-	name = "{:.<20s}".format(name)
+	name = "{:.<25s}".format(name)
 
 	value = ": {:s}".format(str(value))
-	value = "{:.>20s}".format(value)
+	value = "{:.>25s}".format(value)
 
 	return "{:s}{:s}".format(name, value)
+
+
+
+import pytlc
+p1 = pytlc.TLCPointer((123,1))
+p2 = pytlc.TLCPointer(p1)
+p3 = pytlc.TLCPointer(p1+10)
+p4 = pytlc.TLCPointer()
+p = [p1, p2, p3, p4]
+p
+vp = pytlc.TLCProcessor()
+vp

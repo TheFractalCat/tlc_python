@@ -12,7 +12,9 @@ __all__ = ['Publisher', 'Subscriber']
 
 
 
-
+#	======================================================
+#	the broadcast side of the publisher/subscriber objects
+#	======================================================
 class Publisher:
 	"""
 	Implements the broadcast side of publisher/subscriber
@@ -20,7 +22,9 @@ class Publisher:
 
 
 
-
+#	-----------
+#	constructor
+#	-----------
 	def __init__(self, publisherID=None):
 		"""
 		Constructor - builds the empty subscriber list
@@ -32,7 +36,9 @@ class Publisher:
 
 
 
-
+#	-------------------------------
+#	subscription management methods
+#	-------------------------------
 	def subscribe(self, subscriber,*,additionalData=None):
 		"""
 		Add a subscriber to the subscription list
@@ -68,7 +74,21 @@ class Publisher:
 
 
 
+#	--------------------------------------------------------------------
+#	returns the (hopefully) unique identifier assigned to this publisher
+#	--------------------------------------------------------------------
+	def	getID(self):
+		"""
+		return the ID assigned to this publisher
+		"""
+		return	self._id
 
+
+
+
+#	------------------
+#	publication method
+#	------------------
 	def publish(self, additionalData=None):
 		"""
 		Publish event to all subscribers
@@ -80,24 +100,20 @@ class Publisher:
 
 
 
-	def	getID(self):
-		"""
-		return the ID assigned to this publisher
-		"""
-		return	self._id
 
-
-
-
-
+#	===================================================
+#	the receiver side of the publisher/subscriber pairs
+#	===================================================
 class Subscriber:
 	"""
 	The receiver side of the publisher/subscriber model
 	"""
 
 
-
-	def __init__(self, subscriberID=None):
+#	-----------
+#	constructor
+#	-----------
+	def __init__(self):
 		"""
 		Constructor - builds the empty subscription dictionary and initializes the boundDeliveryHandler
 		"""
@@ -107,7 +123,9 @@ class Subscriber:
 
 
 
-
+#	-------------------------------
+#	subscription management methods
+#	-------------------------------
 	def subscribeTo(self, publisher, *, additionalData=None):
 		"""
 		Subscribe to a publisher's offering
@@ -153,6 +171,9 @@ class Subscriber:
 
 
 
+#	-------------------------------------
+#	publication delivery handling methods
+#	-------------------------------------
 	def _deliver(self, transactionType, publisher, subscriberData, publisherData):
 		"""
 		Invoked by the publisher when they have an event to deliver
@@ -179,6 +200,9 @@ class Subscriber:
 	def setDeliveryHandler(self, publisher, handler):
 		"""
 		replace the Delivery handler with another method
+		parameters are:
+			deliveryHandler(transactionType, publisher, subscriberData, publisherData)
+			transactionType = 'a'=added to subscription, 'u'=unsubscribed, 'p'=published event
 		"""
 		self._subscriptions[publisher.getID()] = (publisher, handler)
 

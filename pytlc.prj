@@ -44,6 +44,6 @@ Source Paths=
 4=+AF8-includes+AFw-components+AFw-publisher.py
 5=D:+AFw-Switchkit+AFw-Projects.2020+AFw-Projects+AFw-python+AFw-pytlc+AFwAXw-includes+AFw-components+AFw-tlc+AF8-exceptions.py
 6=+AF8-includes+AFw-components+AFw-processor.py
-7=+AF8-includes+AFw-components+AFw-TLCPointers.py
+7=D:+AFw-Switchkit+AFw-Projects.2020+AFw-Projects+AFw-python+AFw-pytlc+AFwAXw-includes+AFw-components+AFw-tlc+AF8-pointers.py
 [FilesU - Source Code]
 0=scratchpad.py
