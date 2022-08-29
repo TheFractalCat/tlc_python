@@ -66,7 +66,7 @@ class TLCException(Exception):
 		"""
 		provides a printable form of the exception
 		"""
-		return self.getMessage()
+		return self.messageText
 
 
 

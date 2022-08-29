@@ -11,7 +11,7 @@ from .stack import *
 from .tlc_exceptions import *
 from .publisher import *
 from .tlc_pointers import *
-
+from .object_memory import *
 
 
 
@@ -109,6 +109,12 @@ class TLCProcessor:
 		self._objectCounter = TLCPointer()
 		self._effectiveObjectCounter = TLCPointer()
 
+#	---------------------
+#	and object memory too
+#	---------------------
+		self._objectMemory = ObjectMemory()
+		self.OM.setDefaultEntry(TLC_INVALID_OBJECTID)
+
 #	------------------------
 #	now set up subscriptions
 #	------------------------
@@ -139,6 +145,8 @@ class TLCProcessor:
 		response += TLCProcessor.Show("\nEffectiveObjectCounter", self.EOC, prefixLength=31, suffixLength=30)
 
 		response += TLCProcessor.Show("\n\nExceptionState", self.ES, prefixLength=32, suffixLength=30)
+
+		response += "\n\n--Object Memory--\n{:}".format(self.OM)
 
 		return response
 
@@ -246,3 +254,12 @@ class TLCProcessor:
 		assign a new value to the effective object counter
 		"""
 		self._effectiveObjectCounter.set(value)
+
+
+
+	@property
+	def OM(self):
+		"""
+		OM is the object memory used
+		"""
+		return	self._objectMemory

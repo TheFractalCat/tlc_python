@@ -40,6 +40,13 @@ from .tlc_pointers import *
 
 
 
+#	=============
+#	object memory
+#	=============
+from .object_memory import *
+
+
+
 #	==============================
 #	the "atomic" memory cells used
 #	==============================
@@ -63,6 +70,7 @@ __all__ = [
 	*publisher.__all__,
 	*stack.__all__,
 	*dict.__all__,
+	*object_memory.__all__,
 	*nodes.__all__,
 	*processor.__all__,
 	]
