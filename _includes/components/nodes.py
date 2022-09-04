@@ -11,11 +11,20 @@ __all__ = ['TLCNode', 'TLCNilNode']
 
 
 
+
+#	=======================================================================
+#	the base class used to define all methods offered, and default behavior
+#	=======================================================================
 class	TLCNode:
 	"""
 	the basic node used as a parent for all other Node types. it provides default behavior used by other types
 	"""
 
+
+
+#	------------------------
+#	default base constructor
+#	------------------------
 	def	__init__(self):
 		"""
 		constructor for the class - currently it does nothing
@@ -25,17 +34,21 @@ class	TLCNode:
 
 
 
-
+#	--------------------------------
+#	default representation of a node
+#	--------------------------------
 	def	__repr__(self):
 		"""
 		provides a printable view of the object
 		"""
-		return	f'<TLCNode at {hex(id(self))}>'
+		return	f'<{self.__class__.__name__} at {hex(id(self))}>'
 
 
 
 
-
+#	---------------------------------------------------------------------------------------------
+#	returns True if this is an invalid object, like TLCInvalidNode; generally used as a singleton
+#	---------------------------------------------------------------------------------------------
 	def	isInvalid(self):
 		"""
 		True if this is not a valid TLCNode, or False otherwise
@@ -46,7 +59,9 @@ class	TLCNode:
 
 
 
-
+#	-----------------------------------------------------------------------------------------
+#	returns True if this is an error object, like TLCErrorNode; generally used as a singleton
+#	-----------------------------------------------------------------------------------------
 	def	isError(self):
 		"""
 		True is this is an ErrorNode of some kind, or False otherwise
@@ -57,6 +72,9 @@ class	TLCNode:
 
 
 
+#	----------------------------------------------------------------------------------------------------------------------------------------
+#	returns true if this is a Nil pointer, like TLCNilPointer; generally used as a singleton, and normally returns True to isPointer as well
+#	----------------------------------------------------------------------------------------------------------------------------------------
 	def	isNil(self):
 		"""
 		True if this node represents a Nil Pointer, or False otherwise
@@ -68,6 +86,9 @@ class	TLCNode:
 
 
 
+#	---------------------------------------------------------------------------------
+#	returns true if this is some form of a pointer, like TLCNilNode or TLCPointerNode
+#	---------------------------------------------------------------------------------
 	def	isPointer(self):
 		"""
 		True if this node represents a pointer, or False otherwise
@@ -78,10 +99,12 @@ class	TLCNode:
 
 
 
-
-	def	isInstruction(self):
+#	----------------------------------------------------------------------------------
+#	True if this node contains an executable stream of opcodes, like TLCExecutableNode
+#	----------------------------------------------------------------------------------
+	def	isExecutable(self):
 		"""
-		True if this node is a TLC Opcode, or False otherwise
+		True if this node contains an executable stream of opcodes, like TLCExecutableNode
 		default is False
 		"""
 		return	False
@@ -89,7 +112,9 @@ class	TLCNode:
 
 
 
-
+#	-------------------------------------------
+#	True if this node contains data of any kind
+#	-------------------------------------------
 	def	isData(self):
 		"""
 		True if this node contains data of any kind, or False otherwise
@@ -100,10 +125,12 @@ class	TLCNode:
 
 
 
-
-	def	isDict(self):
+#	----------------------------------------------------------
+#	returns True if this node is a TLC Vocabulary of some kind
+#	----------------------------------------------------------
+	def	isVocabulary(self):
 		"""
-		True if this node is a TLC Dictionary, or False otherwise
+		True if this node is a TLC Vocabulary, or False otherwise
 		default is False
 		"""
 		return False
@@ -111,36 +138,77 @@ class	TLCNode:
 
 
 
+#	---------------------------------------------------------------------
+#	processes a pointer offset (if needed) and returns the related object
+#	---------------------------------------------------------------------
+	def	get(self, offset):
+		"""
+		processes a pointer offset (if needed) and returns the related object
+		"""
+#	default processing to to just return ourself
+		return	self
+
+
+
+
+#	---------------------------------------------------------------------
+#	processes an update request based upon a pointer offset (if needed) and returns the related object (or an Invalid node if the update fails)
+#	---------------------------------------------------------------------
+	def	set(self, value, offset):
+		"""
+		processes an update request based upon a pointer offset (if needed) and returns the related object (or an Invalid node if the update fails)
+		"""
+#	default processing to to just return an invalid object
+		return	self.INVALID_OBJECT
+
+
+
+
+
+#	==========================================================================================================
+#	this class defines nil nodes, used to represent an empty space. it can be used as either data or a pointer
+#	==========================================================================================================
+__all__.append('TLCNilNode')
 
 class	TLCNilNode(TLCNode):
 	"""
-	a Nil node is used to represent null pointers inside the TLCVM
+	a Nil node is used to represent an empty space. it can be used as either data or a pointer inside the TLCVM
 	"""
 
+
+#	-----------
+#	constructor
+#	-----------
 	def	__init__(self):
 		"""
-		constructor for the class - currently it does nothing
+		constructor for the class - currently it does nothing except call its super constructor
 		"""
-		pass
+		super().__init__()
 
 
 
 
 
+#	--------------------------------
+#	default representation of a node
+#	--------------------------------
 	def	__repr__(self):
 		"""
 		provides a printable view of the object
 		"""
-		return	f'<Nil Node>'
+		return	'<Nil Node>'
 
 
 
 
 
+#	------------------------------------------------------------------------------------------------------------------------------------------------
+#	returns true if this is a Nil pointer, like TLCNilNode; generally used as a singleton, and normally returns True to isPointer and isData as well
+#	------------------------------------------------------------------------------------------------------------------------------------------------
 	def	isNil(self):
 		"""
 		True if this node represents a Nil Pointer, or False otherwise
-		we return True
+		default is False
 		"""
 		return	True
 
@@ -148,9 +216,89 @@ class	TLCNilNode(TLCNode):
 
 
 
+#	---------------------------------------------------------------
+#	returns true if this is some form of a pointer, like TLCNilNode
+#	---------------------------------------------------------------
 	def	isPointer(self):
 		"""
 		True if this node represents a pointer, or False otherwise
-		we return True
+		default is False
 		"""
 		return True
+
+
+
+
+#	-------------------------------------------
+#	True if this node contains data of any kind
+#	-------------------------------------------
+	def	isData(self):
+		"""
+		True if this node contains data of any kind, or False otherwise
+		default is False
+		"""
+		return True
+
+
+
+
+
+#	===========================================================================================================
+#	this class defines invalid nodes, used to represent a node returned when the requested operation has failed
+#	===========================================================================================================
+__all__.append('TLCInvalidNode')
+
+class	TLCInvalidNode(TLCNode):
+	"""
+	this class defines invalid nodes, used to represent a node returned when the requested operation has failed
+	"""
+
+
+#	-----------
+#	constructor
+#	-----------
+	def	__init__(self):
+		"""
+		constructor for the class - currently it does nothing except call its super constructor
+		"""
+		super().__init__()
+
+
+
+
+
+#	--------------------------------
+#	default representation of a node
+#	--------------------------------
+	def	__repr__(self):
+		"""
+		provides a printable view of the object
+		"""
+		return	'<Invalid Node>'
+
+
+
+
+
+#	---------------------------------------------------------------------------
+#	returns true if this is a Nil node, which TLCInvalidNode will pretend to be
+#	---------------------------------------------------------------------------
+	def	isNil(self):
+		"""
+		True if this node represents a Nil Pointer, or False otherwise
+		default is False
+		"""
+		return	True
+
+
+
+
+#	---------------------------------------------------------------------------------------------
+#	returns True if this is an invalid object, like TLCInvalidNode; generally used as a singleton
+#	---------------------------------------------------------------------------------------------
+	def	isInvalid(self):
+		"""
+		True if this is not a valid TLCNode, or False otherwise
+		default is False
+		"""
+		return	True

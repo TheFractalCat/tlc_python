@@ -11,6 +11,7 @@ from .stack import *
 from .tlc_exceptions import *
 from .publisher import *
 from .tlc_pointers import *
+from .nodes import *
 from .object_memory import *
 
 
@@ -38,7 +39,10 @@ class TLCProcessor:
 #	======================================
 #	class variables, constants and methods
 #	======================================
-	MAX_STACKS = 5
+	_MAX_STACKS = 5
+	_INVALID_OBJECT  = TLCInvalidNode()
+	_NIL = TLCNilNode()
+
 
 
 
@@ -87,7 +91,7 @@ class TLCProcessor:
 #	define the stacks used
 #	----------------------
 		self._stacks = list()
-		for i in range(0,TLCProcessor.MAX_STACKS):
+		for i in range(0,self.MAX_STACKS):
 			self._stacks.append(TLCStack())
 
 #	-----------------------------------
@@ -112,8 +116,9 @@ class TLCProcessor:
 #	---------------------
 #	and object memory too
 #	---------------------
-		self._objectMemory = ObjectMemory()
-		self.OM.setDefaultEntry(TLC_INVALID_OBJECTID)
+		self._objectMemory = ObjectMemory(self.INVALID_OBJECT)
+
+
 
 #	------------------------
 #	now set up subscriptions
@@ -160,11 +165,37 @@ class TLCProcessor:
 		"""
 		allows an indexed reference to a particular stack
 		"""
-		if	0 <= stackIndex < TLCProcessor.MAX_STACKS:
+		if	0 <= stackIndex < self.MAX_STACKS:
 			return	self._stacks[stackIndex]
 
 		raise TLC_INVALID_STACKINDEX
 
+
+
+	@property
+	def MAX_STACKS(self):
+		"""
+		make MAX_STACKS read-only
+		"""
+		return TLCProcessor._MAX_STACKS
+
+
+
+	@property
+	def INVALID_OBJECT(self):
+		"""
+		make INVALID_OBJECT read-only
+		"""
+		return TLCProcessor._INVALID_OBJECT
+
+
+
+	@property
+	def NIL(self):
+		"""
+		make NIL read-only
+		"""
+		return TLCProcessor._NIL
 
 
 
