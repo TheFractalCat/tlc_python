@@ -4,6 +4,16 @@ a version of a list used for memory access by the TLCvm
 
 
 
+#	==============
+#	imports needed
+#	==============
+from .tlc_pointers import *
+from .nodes import *
+
+
+
+
+
 #	-----------
 #	export list
 #	-----------
@@ -125,16 +135,25 @@ class ObjectMemory:
 		"""
 		retrieves a value from object memory, or returns the default value if none is found
 		"""
-		if	key >= len(self._memory) or key < 0:
-			return	self.getDefaultEntry()
 
-		return	self._memory[key]
+#	we can accept integers, tuples, or pointers; anything else makes us unhappy
+		if	type(key) is int:
+			key = TLCPointer(key)
+		elif type(key) is tuple:
+			key = TLCPointer(key)
+		elif type(key) is not TLCPointer:
+			return self.defaultNode
+
+		if	key.objectID >= len(self._memory) or key.objectID < 0:
+			return	self.defaultNode
+
+		return	self._memory[key.objectID].get(key.offset)
 
 
 
 
-
-	def	getDefaultEntry(self):
+	@property
+	def	defaultNode(self):
 		"""
 		Returns the default value returned when an invalid object ID is supplied
 		"""
@@ -143,8 +162,8 @@ class ObjectMemory:
 
 
 
-
-	def	setDefaultEntry(self, default):
+	@defaultNode.setter
+	def	defaultNode(self, default):
 		"""
 		set the default value returned when an invalid object ID is supplied
 		"""

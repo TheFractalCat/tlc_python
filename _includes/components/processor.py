@@ -11,6 +11,7 @@ from .stack import *
 from .tlc_exceptions import *
 from .publisher import *
 from .tlc_pointers import *
+from .registers import *
 from .nodes import *
 from .object_memory import *
 
@@ -71,11 +72,21 @@ class TLCProcessor:
 #	============================
 	def	subhandler1(self, transactionType, publisher, subscriberData, publisherData):
 		"""
-		subscription handler used for keeping pointers in sync
+		subscription handler used for keeping OC and EOC pointers in sync
 		"""
 
 		if transactionType == 'p':
 			subscriberData.set(publisherData)
+
+
+
+	def	subhandler2(self, transactionType, publisher, subscriberData, publisherData):
+		"""
+		subscription handler used for populating the COR from the EOC
+		"""
+
+		if transactionType == 'p':
+			subscriberData.set(self.OM[publisherData])
 
 
 
@@ -113,22 +124,32 @@ class TLCProcessor:
 		self._objectCounter = TLCPointer()
 		self._effectiveObjectCounter = TLCPointer()
 
+#	-----------------------------
+#	and the currentObjectRegister
+#	-----------------------------
+		self._currentObjectRegister = TLCRegister()
+
 #	---------------------
 #	and object memory too
 #	---------------------
 		self._objectMemory = ObjectMemory(self.INVALID_OBJECT)
 
-
+#	------------------------------
+#	set the default invalid object
+#	------------------------------
+		TLCNode.setDefaultObject(TLCProcessor.INVALID_OBJECT)
 
 #	------------------------
 #	now set up subscriptions
 #	------------------------
 		self.EOC.subscriber.subscribeTo(self.OC.publisher, additionalData=self.EOC)
+		self.COR.subscriber.subscribeTo(self.EOC.publisher, additionalData=self.COR)
 
 #	------------
 #	and handlers
 #	------------
 		self.EOC.subscriber.setDeliveryHandler(self.OC.publisher,self.subhandler1)
+		self.COR.subscriber.setDeliveryHandler(self.EOC.publisher,self.subhandler2)
 
 
 
@@ -148,6 +169,7 @@ class TLCProcessor:
 
 		response += TLCProcessor.Show("\n\nObjectCounter", self.OC, prefixLength=32, suffixLength=30)
 		response += TLCProcessor.Show("\nEffectiveObjectCounter", self.EOC, prefixLength=31, suffixLength=30)
+		response += TLCProcessor.Show("\nCurrentObjectRegister", self.COR, prefixLength=31, suffixLength=30)
 
 		response += TLCProcessor.Show("\n\nExceptionState", self.ES, prefixLength=32, suffixLength=30)
 
@@ -289,8 +311,27 @@ class TLCProcessor:
 
 
 	@property
+	def COR(self):
+		"""
+		COR is the current object register
+		"""
+		return	self._currentObjectRegister
+
+
+
+	@COR.setter
+	def COR(self, value):
+		"""
+		assign a new value to the current object register
+		"""
+		self._currentObjectRegister.set(value)
+
+
+
+	@property
 	def OM(self):
 		"""
 		OM is the object memory used
 		"""
 		return	self._objectMemory
+

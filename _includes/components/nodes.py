@@ -22,6 +22,26 @@ class	TLCNode:
 
 
 
+#	======================================
+#	class variables, constants and methods
+#	======================================
+	_DEFAULT_INVALID_OBJECT = None
+
+
+
+#	---------------------------------------------------
+#	class method used to set the default invalid object
+#	---------------------------------------------------
+	@classmethod
+	def	setDefaultObject(cls, node):
+		"""
+		set the class variable used to hold the default invalid object
+		"""
+		TLCNode._DEFAULT_INVALID_OBJECT = node
+
+
+
+
 #	------------------------
 #	default base constructor
 #	------------------------
@@ -159,7 +179,20 @@ class	TLCNode:
 		processes an update request based upon a pointer offset (if needed) and returns the related object (or an Invalid node if the update fails)
 		"""
 #	default processing to to just return an invalid object
-		return	self.INVALID_OBJECT
+		return	self.DEFAULT_INVALID_OBJECT
+
+
+
+
+#	--------------------------------------------------
+#	property used to access the default invalid object
+#	--------------------------------------------------
+	@property
+	def DEFAULT_INVALID_OBJECT(self):
+		"""
+		returns the class-level default invalid object, used for returning errors
+		"""
+		return	TLCNode._DEFAULT_INVALID_OBJECT
 
 
 

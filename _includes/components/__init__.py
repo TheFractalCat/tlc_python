@@ -54,6 +54,13 @@ from .nodes	import *
 
 
 
+#	===========================
+#	registers used by the tlcVM
+#	===========================
+from .registers	import *
+
+
+
 #	=====================================
 #	the virtual processor used by the TLC
 #	=====================================
@@ -71,6 +78,7 @@ __all__ = [
 	*stack.__all__,
 	*dict.__all__,
 	*object_memory.__all__,
+	*registers.__all__,
 	*nodes.__all__,
 	*processor.__all__,
 	]
