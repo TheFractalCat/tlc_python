@@ -7,7 +7,7 @@ this is the module that defines my basic stack for TLC
 #	===========
 #	export list
 #	===========
-__all__ = ['TLCStack']
+__all__ = ['Stack']
 
 
 
@@ -16,7 +16,7 @@ __all__ = ['TLCStack']
 #	==================================
 #	the basic stack used by the TLC vm
 #	==================================
-class	TLCStack():
+class	Stack():
 	"""
 	the actual stack class used by TLC
 	"""

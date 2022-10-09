@@ -38,14 +38,6 @@ Source Paths=
 0=+AF8-includes+AFwAXwBf-init+AF8AXw-.py
 [FilesU - Source Code - components]
 0=+AF8-includes+AFw-components+AFwAXwBf-init+AF8AXw-.py
-1=+AF8-includes+AFw-components+AFw-dict.py
-2=+AF8-includes+AFw-components+AFw-nodes.py
-3=+AF8-includes+AFw-components+AFw-stack.py
-4=+AF8-includes+AFw-components+AFw-publisher.py
-5=D:+AFw-Switchkit+AFw-Projects.2020+AFw-Projects+AFw-python+AFw-pytlc+AFwAXw-includes+AFw-components+AFw-tlc+AF8-exceptions.py
-6=+AF8-includes+AFw-components+AFw-processor.py
-7=D:+AFw-Switchkit+AFw-Projects.2020+AFw-Projects+AFw-python+AFw-pytlc+AFwAXw-includes+AFw-components+AFw-tlc+AF8-pointers.py
-8=+AF8-includes+AFw-components+AFw-object+AF8-memory.py
-9=+AF8-includes+AFw-components+AFw-registers.py
+1=+AF8-includes+AFw-components+AFw-stack.py
 [FilesU - Source Code]
 0=scratchpad.py
