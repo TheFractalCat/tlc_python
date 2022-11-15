@@ -59,7 +59,7 @@ class TLCRegister:
 		"""
 		provides a string version of the register
 		"""
-		return	"{:}".format(self.currentValue)
+		return	"{:}".format(self.get())
 
 
 
@@ -78,37 +78,11 @@ class TLCRegister:
 
 
 
-#	-----------------------------
-#	externally visible properties
-#	-----------------------------
-	@property
-	def currentValue(self):
+#	-------------------------------------------------------
+#	method used to return the current value of the register
+#	-------------------------------------------------------
+	def	get(self):
 		"""
 		return the current value of the register
 		"""
 		return	self._value
-
-
-
-
-	@property
-	def	publisher(self):
-		"""
-		returns the publisher associated with the register, generating one if needed
-		"""
-		if	self._publisher is None:
-			self._publisher = Publisher()
-
-		return self._publisher
-
-
-
-	@property
-	def	subscriber(self):
-		"""
-		returns the subscriber associated with the register, generating one if needed
-		"""
-		if	self._subscriber is None:
-			self._subscriber = Subscriber()
-
-		return self._subscriber
