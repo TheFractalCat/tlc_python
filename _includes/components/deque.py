@@ -12,6 +12,152 @@ __all__ = ['Deque']
 
 
 
+#	================================
+#	internal class used by the deque
+#	================================
+class	DequeFrame:
+	"""
+	internal class used to build the deque
+	"""
+
+
+
+#	===========
+#	constructor
+#	===========
+	def	__init__(self):
+		"""
+		constructor; initializes the next deque frame
+		"""
+		self._payload = None
+		self._successor = self
+		self._predecessor = self
+		self._inactive = True
+
+
+
+
+
+#	===============================
+#	get the current frame successor
+#	===============================
+	def	getSuccessor(self):
+			return	self._successor
+
+
+
+
+#	=================================
+#	change the successor on the frame
+#	=================================
+	def	setSuccessor(self, newSuccessor)
+		"""
+		assigns a new successor to the frame, and returns the old one
+		"""
+		oldSuccessor = self.getSuccessor()
+		self._successor = newSuccessor
+
+		return	oldSuccessor
+
+
+
+
+
+#	=================================
+#	get the current frame predecessor
+#	=================================
+	def	getPredecessor(self):
+			return	self._predecessor
+
+
+
+
+#	===================================
+#	change the predecessor on the frame
+#	===================================
+	def	setPredecessor(self, newPredecessor)
+		"""
+		assigns a new predecessor to the frame, and returns the old one
+		"""
+		oldPredecessor = self.getPredecessor()
+		self._predecessor = newPredecessor
+
+		return	oldPredecessor
+
+
+
+
+
+#	====================================
+#	get the current payload of the frame
+#	====================================
+	def	getPayload(self):
+		"""
+		get the current payload associated with the frame
+		"""
+		return	self._payload
+
+
+
+
+
+#	============================
+#	set the payload of the frame
+#	============================
+	def	setPayload(self, newPayload, inactive=False):
+		"""
+		assigns a new payload to the frame
+		"""
+		self._payload = newPayload
+		self._inactive = inactive
+
+		return	self
+
+
+
+
+
+#	=====================================
+#	returns True if the frame is inactive
+#	=====================================
+	def	isInactive(self):
+		"""
+		returns True if the frame is inactive
+		"""
+		return	self._inactive
+
+
+
+
+#	=======================
+#	make the frame inactive
+#	=======================
+	def	makeInactive(self):
+		"""
+		make the frame inactive
+		"""
+		self.setPayload(None, True)
+		return	self
+
+
+
+
+
+#	==============================
+#	used to pretty-print the frame
+#	==============================
+	def	__repr__(self):
+		"""
+		prints the frame in a meaningful manner
+		"""
+		if	self.isInactive():
+			return	""
+
+		return	"{:}".format(self.getPayload())
+
+
+
+
 
 #	==================================
 #	the basic deque used by the TLC vm
@@ -28,9 +174,10 @@ class	Deque():
 #	===========
 	def	__init__(self):
 		"""
-		constructor; initializes the list used to store stack values
+		constructor; initializes the list used to store deque values
 		"""
-		self._list = list()
+		self._listFront = DequeFrame()
+		self._listBack = self._listFront
 
 
 

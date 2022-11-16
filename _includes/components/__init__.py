@@ -11,6 +11,7 @@ print("Loading components")
 #	the basic stack used
 #	====================
 from .stack import *
+from .deque import *
 from .registers import *
 
 
@@ -22,5 +23,6 @@ from .registers import *
 #	==================================
 __all__ = [
 	*stack.__all__,
+	*deque.__all__,
 	*registers.__all__,
 	]
