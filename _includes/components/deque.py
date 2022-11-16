@@ -50,7 +50,7 @@ class	DequeFrame:
 #	=================================
 #	change the successor on the frame
 #	=================================
-	def	setSuccessor(self, newSuccessor)
+	def	setSuccessor(self, newSuccessor):
 		"""
 		assigns a new successor to the frame, and returns the old one
 		"""
@@ -75,7 +75,7 @@ class	DequeFrame:
 #	===================================
 #	change the predecessor on the frame
 #	===================================
-	def	setPredecessor(self, newPredecessor)
+	def	setPredecessor(self, newPredecessor):
 		"""
 		assigns a new predecessor to the frame, and returns the old one
 		"""
@@ -178,29 +178,7 @@ class	Deque():
 		"""
 		self._listFront = DequeFrame()
 		self._listBack = self._listFront
-
-
-
-
-
-#	=====================================================================
-#	magic methods used to make indexing on the stack work the way we want
-#	=====================================================================
-	def	__getitem__(self,  key):
-		"""
-		reverses indexing so top of stack is 0
-		"""
-		return	self._list.__getitem__(-(key+1))
-
-
-
-
-
-	def	__setitem__(self,  key, newValue):
-		"""
-		reverses indexed assignment so top of stack is 0
-		"""
-		return	self._list.__setitem__(-(key+1), newValue)
+		self._size = 0
 
 
 
@@ -210,14 +188,18 @@ class	Deque():
 #	========================================
 	def	__iter__(self):
 		"""
-		provides a means of iterating through the stack from the top down
+		provides a means of iterating through the deque from the top down
 		"""
-		i = 0
+		currentFrame = self._listFront
 
-		while i < len(self._list):
-			v = self[i]
-			i += 1
-			yield v
+		while not currentFrame.isInactive():
+			yield currentFrame.getPayload()
+
+			if	currentFrame == self._listBack:
+				break
+
+			currentFrame = currentFrame.getSuccessor()
+
 
 
 
@@ -225,9 +207,9 @@ class	Deque():
 
 	def	__len__(self):
 		"""
-		returns the current size of the stack
+		returns the current size of the deque
 		"""
-		return	len(self._list)
+		return	self._size
 
 
 
@@ -237,7 +219,7 @@ class	Deque():
 #	==============================
 	def	__repr__(self):
 		"""
-		prints the stack in a meaningful manner with "top" to the left, going deeper to the right
+		prints the deque in a meaningful manner with "oldest" to the left, going "newer" to the right
 		"""
 		sep = ""
 		rep = "["
@@ -250,68 +232,23 @@ class	Deque():
 
 
 
-#	==========================
-#	stack manipulation methods
-#	==========================
-	def	clear(self):
+
+	def	append(self, newValue):
 		"""
-		clears the stack of all data and returns a self reference
+		pushs a new value on to the back of the deque
 		"""
-		self._list.clear()
+		if	not self._listBack.getSuccessor().isInactive():
+			newFrame = DequeFrame()
+			oldSuccessor = self._listBack.getSuccessor()
 
-		return self
+			self._listBack.setSuccessor(newFrame.setSuccessor(oldSuccessor))
+			newFrame.setPredecessor(oldSuccessor.setPredecessor(newFrame))
 
+		self._listBack.getSuccessor().setPayload(newValue)
 
+		self._listBack = self._listBack.getSuccessor()
 
-
-
-	def	push(self, newValue):
-		"""
-		pushs a new value on to the stack and returns a self reference
-		"""
-		self._list.append(newValue)
-		return	self
-
-
-
-
-
-	def	pull(self):
-		"""
-		removes the top value on the stack and returns it
-		"""
-		return	self._list.pop()
-
-
-
-
-
-	def	rotate(self, depth):
-		"""
-		"rotates" the first depth values on the stack and returns a self reference
-
-		if depth is negative, rotation is to the rear (deeper into the stack)
-		otherwise, rotation is to the front (towards the "top" of the stack)
-		"""
-		if	depth < 0:
-			depth = -depth
-			first = depth - 1
-			last = 0
-			direction = -1
-		else:
-			first = 0
-			last = depth - 1
-			direction = 1
-
-		temp = self[first]
-		first = first + direction
-
-		while((depth := depth - 1) > 0):
-			self[first-direction] = self[first]
-			first += direction
-
-
-		self[last] = temp
+		self._size += 1
 
 		return	self
 
@@ -319,11 +256,59 @@ class	Deque():
 
 
 
-	def	duplicate(self,offset=0):
+	def	prepend(self, newValue):
 		"""
-		duplicates a value on the stack and returns a self reference
-		offset can be supplied if value to be duplicated is not the TopOfStack
+		pushs a new value on to the front of the deque
 		"""
-		self.push(self[offset])
+		if	not self._listFront.getPredecessor().isInactive():
+			newFrame = DequeFrame()
+			oldPredecessor = self._listFront.getPredecessor()
+
+			self._listFront.setPredecessor(newFrame.setPredecessor(oldPredecessor))
+			newFrame.setSuccessor(oldPredecessor.setSuccessor(newFrame))
+
+		self._listFront.getPredecessor().setPayload(newValue)
+
+		self._listFront = self._listFront.getPredecessor()
+
+		self._size += 1
 
 		return	self
+
+
+
+
+
+	def	popOldest(self):
+		"""
+		removes the oldest value from the deque and return it
+		"""
+
+		payload = self._listFront.getPayload()
+
+		if	not self._listFront.isInactive():
+			self._listFront.makeInactive()
+			self._listFront = self._listFront.getSuccessor()
+
+		self._size = max(self._size -1, 0)
+
+		return	payload
+
+
+
+
+
+	def	popNewest(self):
+		"""
+		removes the newest value from the deque and return it
+		"""
+
+		payload = self._listBack.getPayload()
+
+		if	not self._listBack.isInactive():
+			self._listBack.makeInactive()
+			self._listBack = self._listBack.getPredecessor()
+
+		self._size = max(self._size -1, 0)
+
+		return	payload
