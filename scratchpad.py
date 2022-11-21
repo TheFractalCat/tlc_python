@@ -75,3 +75,6 @@ p = [p1, p2, p3, p4]
 p
 vp = pytlc.TLCProcessor()
 vp
+
+d = pytlc.deque()
+"{:019_X}".format(id(d))

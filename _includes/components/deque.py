@@ -37,7 +37,6 @@ class	DequeFrame:
 
 
 
-
 #	===============================
 #	get the current frame successor
 #	===============================
@@ -179,6 +178,7 @@ class	Deque():
 		self._listFront = DequeFrame()
 		self._listBack = self._listFront
 		self._size = 0
+		self._trigger = None
 
 
 
@@ -233,6 +233,9 @@ class	Deque():
 
 
 
+#	=====================================
+#	methods used to add/remove from Deque
+#	=====================================
 	def	append(self, newValue):
 		"""
 		pushs a new value on to the back of the deque
@@ -249,6 +252,10 @@ class	Deque():
 		self._listBack = self._listBack.getSuccessor()
 
 		self._size += 1
+
+#	finally, fire the trigger id needed
+		if	self._trigger != None:
+			self._trigger(self)
 
 		return	self
 
@@ -272,6 +279,10 @@ class	Deque():
 		self._listFront = self._listFront.getPredecessor()
 
 		self._size += 1
+
+#	finally, fire the trigger id needed
+		if	self._trigger != None:
+			self._trigger(self)
 
 		return	self
 
@@ -312,3 +323,103 @@ class	Deque():
 		self._size = max(self._size -1, 0)
 
 		return	payload
+
+
+
+
+
+#	============================================
+#	accessor functions to allow frame peek/pokes
+#	============================================
+	def	peek(self, offset, default=None):
+		"""
+		allows access into the entries on the deque; negative numbers start at the back of the deque (newest); otherwise access is to next available entry
+		"""
+		if	offset < 0:
+			reverse = True
+			current = self._listBack
+			endpoint = self._listFront
+			offset = abs(offset)-1
+		else:
+			reverse = False
+			current = self._listFront
+			endpoint = self._listBack
+
+		while (current != endpoint and not current.isInactive() and offset > 0):
+			offset -= 1
+			current = current.getPredecessor() if reverse else current.getSuccessor()
+
+		if	current.isInactive() or offset > 0:
+			return	default
+
+		return	current.getPayload()
+
+
+
+
+	def	poke(self, offset, newPayload):
+		"""
+		allows update on the entries on the deque; negative numbers start at the back of the deque (newest); otherwise access is to next available entry
+		returns	True if the assignment fails, or False otherwise
+		"""
+		if	offset < 0:
+			reverse = True
+			current = self._listBack
+			endpoint = self._listFront
+			offset = abs(offset)-1
+		else:
+			reverse = False
+			current = self._listFront
+			endpoint = self._listBack
+
+		while (current != endpoint and not current.isInactive() and offset > 0):
+			offset -= 1
+			current = current.getPredecessor() if reverse else current.getSuccessor()
+
+		if	current.isInactive() or offset > 0:
+			return	True
+
+		current.setPayload(newPayload)
+		return	False
+
+
+
+
+
+
+#	====================
+#	misc support methods
+#	====================
+	def	isEmpty(self):
+		"""
+		returns True if the deque is empty, or False otherwise
+		"""
+		return	self._size == 0
+
+
+
+	def	clear(self):
+		"""
+		clears the deque of all values
+		"""
+		while not self.isEmpty():
+			self.popOldest()
+
+		return	self
+
+
+
+
+	def	addTrigger(self, trigger):
+		"""
+		adds a funtion (or a bound method) to be called when an entry is added to the deque
+		"""
+		self._trigger = trigger
+
+
+
+	def	removeTrigger(self):
+		"""
+		clear any trigger that might be set
+		"""
+		self._trigger = None
