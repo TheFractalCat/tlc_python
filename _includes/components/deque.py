@@ -333,7 +333,8 @@ class	Deque():
 #	============================================
 	def	peek(self, offset, default=None):
 		"""
-		allows access into the entries on the deque; negative numbers start at the back of the deque (newest); otherwise access is to next available entry
+		allows access into the entries on the deque; negative numbers start at the back of the deque (newest);
+		otherwise access is to next available entry
 		"""
 		if	offset < 0:
 			reverse = True
@@ -359,7 +360,8 @@ class	Deque():
 
 	def	poke(self, offset, newPayload):
 		"""
-		allows update on the entries on the deque; negative numbers start at the back of the deque (newest); otherwise access is to next available entry
+		allows update on the entries on the deque; negative numbers start at the back of the deque (newest);
+		otherwise access is to next available entry
 		returns	True if the assignment fails, or False otherwise
 		"""
 		if	offset < 0:
