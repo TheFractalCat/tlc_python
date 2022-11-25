@@ -388,6 +388,29 @@ class	Deque():
 
 
 
+#	=====================================================================
+#	magic methods used to make indexing on the deque work the way we want
+#	=====================================================================
+	def	__getitem__(self,  key):
+		"""
+		maps to a call to peek
+		"""
+		return	self.peek(key)
+
+
+
+
+
+	def	__setitem__(self,  key, newValue):
+		"""
+		maps to a call to poke
+		"""
+		return	self.poke(key, newValue)
+
+
+
+
+
 
 #	====================
 #	misc support methods

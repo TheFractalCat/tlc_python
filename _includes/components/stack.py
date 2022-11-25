@@ -36,10 +36,10 @@ class	Stack():
 
 
 
-#	=====================================================================
-#	magic methods used to make indexing on the stack work the way we want
-#	=====================================================================
-	def	__getitem__(self,  key):
+#	================================================
+#	basic stack element access the way we want to go
+#	================================================
+	def	peek(self,  key):
 		"""
 		reverses indexing so top of stack is 0
 		"""
@@ -49,11 +49,34 @@ class	Stack():
 
 
 
-	def	__setitem__(self,  key, newValue):
+	def	poke(self,  key, newValue):
 		"""
 		reverses indexed assignment so top of stack is 0
 		"""
 		return	self._list.__setitem__(-(key+1), newValue)
+
+
+
+
+
+#	=====================================================================
+#	magic methods used to make indexing on the stack work the way we want
+#	=====================================================================
+	def	__getitem__(self, key):
+		"""
+		maps indexing to peeking
+		"""
+		return	self.peek(key)
+
+
+
+
+
+	def	__setitem__(self,  key, newValue):
+		"""
+		maps indexed assignment to poking
+		"""
+		return	self.poke(key, newValue)
 
 
 
