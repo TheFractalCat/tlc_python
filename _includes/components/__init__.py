@@ -13,6 +13,7 @@ print("Loading components")
 from .stack import *
 from .deque import *
 from .registers import *
+from .processor import *
 
 
 

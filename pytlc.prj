@@ -41,7 +41,7 @@ Source Paths=
 1=+AF8-includes+AFw-components+AFw-stack.py
 2=+AF8-includes+AFw-components+AFw-registers.py
 3=+AF8-includes+AFw-components+AFw-deque.py
+4=+AF8-includes+AFw-components+AFw-object+AF8-memory.py
+5=+AF8-includes+AFw-components+AFw-processor.py
 [FilesU - Source Code]
 0=scratchpad.py
-[FilesU]
-0=+AF8-includes+AFw-components+AFw-object+AF8-memory.py

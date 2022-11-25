@@ -24,11 +24,11 @@ __all__ = ['ObjectMemory',]
 
 
 #	=================================================================
-#	a version of list used for memory storage and access in the TLCvm
+#	a version of list used for memory storage and access by ObjectMemory
 #	=================================================================
-class ObjectMemory:
+class MemorySegment:
 	"""
-	implements memory for the TLCvm
+	a memory subsection used by Object Memory
 	"""
 
 
@@ -36,12 +36,29 @@ class ObjectMemory:
 #	-----------
 #	constructor
 #	-----------
-	def __init__(self, default=None):
+	def __init__(self, baseAddress, default=None):
 		"""
 		Constructor - builds the empty object memory
 		"""
 		self._memory = list()
+		self._baseAddress = baseAddress
 		self._defaultValue = default
+
+
+
+
+
+#	========================================
+#	check an address to see if it's in range
+#	========================================
+	def	inRange(self, targetAddress):
+		"""
+		checks the target address to see if it's in range for this segment
+		"""
+		if	targetAddress >= self.baseAddress:
+			return	True
+
+		return	False
 
 
 
@@ -50,11 +67,17 @@ class ObjectMemory:
 #	=================================================================
 #	magic methods used to provide "clean" access to the object memory
 #	=================================================================
-	def	__getitem__(self,  key):
+	def	__getitem__(self,  address):
 		"""
 		allows indexed access to the dictionary
 		"""
-		return	self.getEntry(key)
+		return	self.peek(address)
+
+	def	__setitem__(self,  address):
+		"""
+		allows indexed access to the dictionary
+		"""
+		return	self.poke(address, newValue)
 
 
 
@@ -62,7 +85,7 @@ class ObjectMemory:
 		"""
 		handles addition as an append; result returned is index assigned
 		"""
-		return	self.addEntry(value)
+		return	self.append(value)
 
 
 
@@ -119,36 +142,60 @@ class ObjectMemory:
 #	===========================
 #	memory entry/update methods
 #	===========================
-	def	addEntry(self, value):
+	def	append(self, value):
 		"""
 		adds an entry to object memory and returns the associated index
 		"""
-		index = len(self._memory)
+		index = len(self)
 		self._memory.append(value)
 
-		return	index
+		return	index + self.baseAddress
 
 
 
 
 
-	def	getEntry(self, key):
+	def	peek(self, address):
 		"""
 		retrieves a value from object memory, or returns the default value if none is found
 		"""
 
-#	we can accept integers, tuples, or pointers; anything else makes us unhappy
-		if	type(key) is int:
-			key = TLCPointer(key)
-		elif type(key) is tuple:
-			key = TLCPointer(key)
-		elif type(key) is not TLCPointer:
-			return self.defaultNode
+		address -= self.baseAddress
 
-		if	key.objectID >= len(self._memory) or key.objectID < 0:
+		if	address >= len(self) or key.objectID < 0:
 			return	self.defaultNode
 
-		return	self._memory[key.objectID].get(key.offset)
+		return	self._memory[address]
+
+
+
+
+
+	def	poke(self, address, newValue):
+		"""
+		assigns a new value to object memory, or returns the default value if out of range
+		"""
+
+		address -= self.baseAddress
+
+		if	address >= len(self) or key.objectID < 0:
+			return	self.defaultNode
+
+		self._memory[address] = newValue
+
+		return	newValue
+
+
+
+
+
+	@property
+	def	baseAddress(self):
+		"""
+		Returns the base address for the memory segment (read-only)
+		"""
+		return self._baseAddress
+
 
 
 
