@@ -134,7 +134,7 @@ class MemorySegment:
 		sep = ""
 
 		while(i < len(self)):
-			buf += "{0:}{1:011_d} {2:}".format(sep, i+self.baseAddress, self[i+self.baseAddress])
+			buf += "{0:}{1:011_d}: {2:}".format(sep, i+self.baseAddress, self[i+self.baseAddress])
 			i += 1
 			sep = "\n"
 

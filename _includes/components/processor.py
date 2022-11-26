@@ -9,12 +9,14 @@ this module defines the basic TLC processor used by the tlcVM
 #	==============
 from .stack import *
 from .deque import *
-from .tlc_exceptions import *
+
 from .publisher import *
+from .tlc_exceptions import *
 from .tlc_pointers import *
+
+from .object_memory import *
 from .registers import *
 # from .nodes import *
-from .object_memory import *
 
 
 
@@ -42,8 +44,10 @@ class TLCProcessor:
 #	class variables, constants and methods
 #	======================================
 	_MAX_STACKS = 5
-	_INVALID_OBJECT  = TLCInvalidNode()
-	_NIL = TLCNilNode()
+#	_INVALID_OBJECT  = TLCInvalidNode()
+	_INVALID_OBJECT  = None
+#	_NIL = TLCNilNode()
+	_NIL = None
 
 
 
@@ -104,7 +108,7 @@ class TLCProcessor:
 #	----------------------
 		self._stacks = list()
 		for i in range(0,self.MAX_STACKS):
-			self._stacks.append(TLCStack())
+			self._stacks.append(Stack())
 
 #	-----------------------------------
 #	provide direct references to stacks
@@ -113,6 +117,12 @@ class TLCProcessor:
 		self._DS = self._stacks[1]
 		self._IS = self._stacks[2]
 		self._SS = self._stacks[3]
+
+#	--------------------
+#	input deque and libl
+#	--------------------
+		self._ID = Deque()
+		self._libl = Deque()
 
 #	--------------------------
 #	set up the exception state
@@ -133,24 +143,24 @@ class TLCProcessor:
 #	---------------------
 #	and object memory too
 #	---------------------
-		self._objectMemory = ObjectMemory(self.INVALID_OBJECT)
+		self._objectMemory = ObjectMemory(ObjectMemory())
 
 #	------------------------------
 #	set the default invalid object
 #	------------------------------
-		TLCNode.setDefaultObject(TLCProcessor.INVALID_OBJECT)
+#		TLCNode.setDefaultObject(TLCProcessor.INVALID_OBJECT)
 
 #	------------------------
 #	now set up subscriptions
 #	------------------------
-		self.EOC.subscriber.subscribeTo(self.OC.publisher, additionalData=self.EOC)
-		self.COR.subscriber.subscribeTo(self.EOC.publisher, additionalData=self.COR)
+#		self.EOC.subscriber.subscribeTo(self.OC.publisher, additionalData=self.EOC)
+#		self.COR.subscriber.subscribeTo(self.EOC.publisher, additionalData=self.COR)
 
 #	------------
 #	and handlers
 #	------------
-		self.EOC.subscriber.setDeliveryHandler(self.OC.publisher,self.subhandler1)
-		self.COR.subscriber.setDeliveryHandler(self.EOC.publisher,self.subhandler2)
+#		self.EOC.subscriber.setDeliveryHandler(self.OC.publisher,self.subhandler1)
+#		self.COR.subscriber.setDeliveryHandler(self.EOC.publisher,self.subhandler2)
 
 
 
@@ -167,6 +177,9 @@ class TLCProcessor:
 		response += TLCProcessor.Show("\nReturnStack", self.RS,prefixLength=31, suffixLength=30)
 		response += TLCProcessor.Show("\nIterationStack", self.IS, prefixLength=31, suffixLength=30)
 		response += TLCProcessor.Show("\nSuspenseStack", self.SS, prefixLength=31, suffixLength=30)
+
+		response += TLCProcessor.Show("\n\nInputDeque", self.ID, prefixLength=32, suffixLength=30)
+		response += TLCProcessor.Show("\nLibraryList", self.libl, prefixLength=31, suffixLength=30)
 
 		response += TLCProcessor.Show("\n\nObjectCounter", self.OC, prefixLength=32, suffixLength=30)
 		response += TLCProcessor.Show("\nEffectiveObjectCounter", self.EOC, prefixLength=31, suffixLength=30)
@@ -256,6 +269,24 @@ class TLCProcessor:
 		SS is the Suspense Stack
 		"""
 		return	self._SS
+
+
+
+	@property
+	def ID(self):
+		"""
+		ID is the input deque
+		"""
+		return	self._ID
+
+
+
+	@property
+	def libl(self):
+		"""
+		libl is the library list
+		"""
+		return	self._libl
 
 
 

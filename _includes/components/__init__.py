@@ -14,7 +14,7 @@ from .stack import *
 from .deque import *
 from .registers import *
 from .object_memory import *
-
+from .processor import *
 
 
 
@@ -27,4 +27,5 @@ __all__ = [
 	*deque.__all__,
 	*registers.__all__,
 	*object_memory.__all__,
+	*processor.__all__,
 	]
