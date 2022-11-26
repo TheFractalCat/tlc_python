@@ -8,8 +8,8 @@ a version of a list used for memory access by the TLCvm
 #	==============
 #	imports needed
 #	==============
-from .tlc_pointers import *
-from .nodes import *
+# from .tlc_pointers import *
+# from .nodes import *
 
 
 
@@ -18,7 +18,9 @@ from .nodes import *
 #	-----------
 #	export list
 #	-----------
-__all__ = ['ObjectMemory',]
+__all__ = ['MemorySegment',
+		   'ObjectMemory',
+			]
 
 
 
@@ -38,7 +40,7 @@ class MemorySegment:
 #	-----------
 	def __init__(self, baseAddress, default=None):
 		"""
-		Constructor - builds the empty object memory
+		Constructor - builds the empty memory segment
 		"""
 		self._memory = list()
 		self._baseAddress = baseAddress
@@ -64,16 +66,18 @@ class MemorySegment:
 
 
 
-#	=================================================================
-#	magic methods used to provide "clean" access to the object memory
-#	=================================================================
+#	==================================================================
+#	magic methods used to provide "clean" access to the memory segment
+#	==================================================================
 	def	__getitem__(self,  address):
 		"""
 		allows indexed access to the dictionary
 		"""
 		return	self.peek(address)
 
-	def	__setitem__(self,  address):
+
+
+	def	__setitem__(self,  address, newValue):
 		"""
 		allows indexed access to the dictionary
 		"""
@@ -130,7 +134,7 @@ class MemorySegment:
 		sep = ""
 
 		while(i < len(self)):
-			buf += "{0:}{1:04d} {2:}".format(sep, i, self[i])
+			buf += "{0:}{1:011_d} {2:}".format(sep, i+self.baseAddress, self[i+self.baseAddress])
 			i += 1
 			sep = "\n"
 
@@ -162,7 +166,7 @@ class MemorySegment:
 
 		address -= self.baseAddress
 
-		if	address >= len(self) or key.objectID < 0:
+		if	address >= len(self) or address < 0:
 			return	self.defaultNode
 
 		return	self._memory[address]
@@ -178,7 +182,7 @@ class MemorySegment:
 
 		address -= self.baseAddress
 
-		if	address >= len(self) or key.objectID < 0:
+		if	address >= len(self) or address < 0:
 			return	self.defaultNode
 
 		self._memory[address] = newValue
@@ -220,5 +224,122 @@ class MemorySegment:
 
 
 
+
+#	============================================
+#	the organizing structure for memory segments
+#	============================================
+class ObjectMemory:
+	"""
+	The organizing class for memory segments
+	"""
+
+
+
+#	-----------
+#	constructor
+#	-----------
+	def __init__(self, default=None):
+		"""
+		Constructor - builds the empty object memory
+		"""
+		self._segments = list()
+		self._defaultValue = default
+
+#	build the segments needed
+		self._segments.append(MemorySegment(1_000_000))
+		self._segments.append(MemorySegment(0_000_000))
+
+
+
+
+#	======================================
+#	method used for pretty-printing memory
+#	======================================
+	def	__repr__(self):
+		"""
+		provides a printable view of the object
+		"""
+		i = len(self._segments)-1
+		buf = ""
+		sep = ""
+
+		while(i >= 0):
+			buf += "{:}{:}".format(sep, self._segments[i])
+			i -= 1
+			sep = "\n"
+
+
+		return	buf
+
+
+
+	@property
+	def SystemSpace(self):
+		"""
+		reference to the system segment
+		"""
+		return	self._segments[0]
+
+
+
+	@property
+	def UserSpace(self):
+		"""
+		reference to the user segment
+		"""
+		return	self._segments[1]
+
+
+
+
+
+#	============================
+#	content management Functions
+#	============================
+	def	peek(self, address):
+		"""
+		retrieves a value from the appropriate memory segment, or returns the default value if none is found
+		"""
+		for ms in self._segments:
+			if	ms.inRange(address):
+				return	ms.peek(address)
+
+		return	self.defaultNode
+
+
+
+
+
+	def	poke(self, address, newValue):
+		"""
+		assigns a new value to the appropriate memory segment, or returns the default value if out of range
+		"""
+
+		for ms in self._segments:
+			if	ms.inRange(address):
+				return	ms.poke(address, newValue)
+
+		return	self.defaultNode
+
+
+
+
+
+#	==================================================================
+#	magic methods used to provide "clean" access to the memory segment
+#	==================================================================
+	def	__getitem__(self,  address):
+		"""
+		allows indexed access to the dictionary
+		"""
+		return	self.peek(address)
+
+
+
+	def	__setitem__(self,  address, newValue):
+		"""
+		allows indexed access to the dictionary
+		"""
+		return	self.poke(address, newValue)
 
 

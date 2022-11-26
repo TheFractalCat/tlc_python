@@ -388,6 +388,131 @@ class	Deque():
 
 
 
+	def	frot(self, offset, default=None):
+		"""
+		rotate entries down into the deque, or up from the deque
+		(positive numbers rotate down into the seque; negative number up from the deque)
+		"""
+
+		if	offset > 0:
+			rotateUP = False
+		else:
+			rotateUP = True
+			offset = abs(offset)
+
+		target = self._listFront
+		current = target
+
+		endpoint = self._listBack
+
+		while (current != endpoint and not current.isInactive() and offset > 0):
+			offset -= 1
+			current = current.getSuccessor()
+
+		if	current.isInactive() or offset > 0 or len(self) < 2:
+			return	self
+
+		if	rotateUP:
+#	remove the target node
+			self._listFront = target.getSuccessor()
+			target.getPredecessor().setSuccessor(target.getSuccessor())
+			target.getSuccessor().setPredecessor(target.getPredecessor())
+
+#add it at the insertion point
+			target.setPredecessor(current)
+			target.setSuccessor(current.getSuccessor())
+			current.getSuccessor().setPredecessor(target)
+			current.setSuccessor(target)
+
+			if	self._listBack == current:
+				self._listBack = target
+
+		else:
+#	remove the target node
+			current.getPredecessor().setSuccessor(current.getSuccessor())
+			current.getSuccessor().setPredecessor(current.getPredecessor())
+
+#add it to the front
+			current.setSuccessor(self._listFront)
+
+			if	self._listBack == current:
+				self._listBack = current.getPredecessor()
+
+			current.setPredecessor(current.getSuccessor().getPredecessor())
+			current.getPredecessor().setSuccessor(current)
+			self._listFront = current
+
+		return	self
+
+
+
+
+
+	def	rrot(self, offset, default=None):
+		"""
+		reverse rotate (from the back) entries down into the deque, or up from the deque
+		(positive numbers rotate down into the seque; negative number up from the deque)
+		"""
+
+		if	offset > 0:
+			rotateUP = False
+		else:
+			rotateUP = True
+			offset = abs(offset)
+
+		target = self._listBack
+		current = target
+
+		endpoint = self._listFront
+
+		while (current != endpoint and not current.isInactive() and offset > 0):
+			offset -= 1
+			current = current.getPredecessor()
+
+		if	current.isInactive() or offset > 0 or len(self) < 2:
+			return	self
+
+		if	rotateUP:
+#	remove the target node
+			self._listBack = target.getPredecessor()
+			target.getPredecessor().setSuccessor(target.getSuccessor())
+			target.getSuccessor().setPredecessor(target.getPredecessor())
+
+#add it at the insertion point
+			target.setSuccessor(current)
+			target.setPredecessor(current.getPredecessor())
+			current.getPredecessor().setSuccessor(target)
+			current.setPredecessor(target)
+
+			if	self._listFront == current:
+				self._listFront = target
+
+		else:
+#	remove the target node
+			current.getPredecessor().setSuccessor(current.getSuccessor())
+			current.getSuccessor().setPredecessor(current.getPredecessor())
+
+#add it to the back
+			current.setPredecessor(self._listBack)
+
+			if	self._listFront == current:
+				self._listFront = current.getSuccessor()
+
+			current.setSuccessor(current.getPredecessor().getSuccessor())
+			current.getPredecessor().setSuccessor(current)
+			current.getSuccessor().setPredecessor(current)
+			self._listBack = current
+
+		return	self
+
+
+
+
+
+
+
+
+
 #	=====================================================================
 #	magic methods used to make indexing on the deque work the way we want
 #	=====================================================================

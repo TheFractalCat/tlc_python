@@ -13,7 +13,7 @@ print("Loading components")
 from .stack import *
 from .deque import *
 from .registers import *
-from .processor import *
+from .object_memory import *
 
 
 
@@ -26,4 +26,5 @@ __all__ = [
 	*stack.__all__,
 	*deque.__all__,
 	*registers.__all__,
+	*object_memory.__all__,
 	]

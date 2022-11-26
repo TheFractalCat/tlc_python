@@ -13,7 +13,7 @@ from .tlc_exceptions import *
 from .publisher import *
 from .tlc_pointers import *
 from .registers import *
-from .nodes import *
+# from .nodes import *
 from .object_memory import *
 
 
