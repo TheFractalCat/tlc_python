@@ -586,7 +586,7 @@ class	Deque():
 
 	def	addTrigger(self, trigger):
 		"""
-		adds a funtion (or a bound method) to be called when an entry is added to the deque
+		adds a function (or a bound method) to be called when an entry is added to the deque
 		"""
 		self._trigger = trigger
 

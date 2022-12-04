@@ -34,6 +34,9 @@ zero-indexed from the oldest entry; negative indexes start with the newest entry
 |popOldest()|removes and returns the top value on the deque; throws `IndexError` if deque is empty|
 |frot(depth)|"rotates" the first `depth` values on the deque, starting with the oldest entries<br />a negative `depth` rotates deeper in the deque;<br/>a positive `depth` rotates towards the top of the deque|
 |rrot(depth)|"rotates" the first `depth` values on the deque, starting with the newest entries<br />a negative `depth` rotates deeper in the deque;<br/>a positive `depth` rotates towards the bottom of the deque|
+|isEmpty()|returns True if the deque is empty, or False otherwise|
+|addTrigger(trigger)|adds a function (or a bound method) to be called when an entry is added to the deque|
+|removeTrigger()|clears any trigger that might have been set|
 |array indexes|wrappers for `peek` and `poke`|
 |Iteration support|allows walking through the stack from newest entry, and returns `len(Stack)` if requested|
 
