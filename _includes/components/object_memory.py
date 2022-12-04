@@ -185,9 +185,10 @@ class MemorySegment:
 		if	address >= len(self) or address < 0:
 			return	self.defaultNode
 
+		oldValue = self._memory[address]
 		self._memory[address] = newValue
 
-		return	newValue
+		return	oldValue
 
 
 

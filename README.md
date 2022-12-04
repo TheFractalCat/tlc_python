@@ -40,6 +40,16 @@ zero-indexed from the oldest entry; negative indexes start with the newest entry
 |array indexes|wrappers for `peek` and `poke`|
 |Iteration support|allows walking through the stack from newest entry, and returns `len(Stack)` if requested|
 
+## ObjectMemory - the basic storage used by the TLCvm ##
+
+ObjectMemory is used for storage for the TLCvm; it's broken into `UserSpace` and `SystemSpace`
+
+|Method|Description|
+|:-:|-|
+|constructor(default=None)|Initializes the ObjectMemory, and assigns a default value to be returned if no match is found|
+|peek(address)|retrieves a value from the appropriate memory segment, or returns the default value if none is found|
+|poke(address, newValue)|assigns a new value to the appropriate memory segment, or returns the default value if out of range|
+
 
 ## Processor - the tlcVM processor object ##
 |Register|Value|
