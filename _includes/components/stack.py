@@ -19,6 +19,11 @@ __all__ = ['Stack']
 class	Stack():
 	"""
 	the actual stack class used by TLC
+
+	indexing is zero-based from the most recent entry on the stack
+	negative indexes start with the oldest entry at the bottom of the stack
+
+	attempts to access out of range result in IndexError being thrown
 	"""
 
 
@@ -28,7 +33,7 @@ class	Stack():
 #	===========
 	def	__init__(self):
 		"""
-		constructor; initializes the list used to store stack values
+		constructor; initializes internal storage used to store stack values
 		"""
 		self._list = list()
 
@@ -41,7 +46,7 @@ class	Stack():
 #	================================================
 	def	peek(self,  key):
 		"""
-		reverses indexing so top of stack is 0
+		returns a copy of the selected value off of the stack, or throws IndexError if out of range
 		"""
 		return	self._list.__getitem__(-(key+1))
 
@@ -51,7 +56,7 @@ class	Stack():
 
 	def	poke(self,  key, newValue):
 		"""
-		reverses indexed assignment so top of stack is 0
+		assigns a new value to the selected entry, or throws IndexError if out of range
 		"""
 		return	self._list.__setitem__(-(key+1), newValue)
 

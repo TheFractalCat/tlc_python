@@ -1,5 +1,12 @@
 """
-this is the module that defines my basic deque for TLC
+this is the module that defines my basic deque for TLC.
+
+It allows additions and removals from either end, although primary processing is queue-based; adding to one end, and removing from the other
+
+indexing is zero-based from the oldest entry on the deque
+negative indexes refer to the newest entries on the deque
+
+attempts to access out of range result in IndexError being thrown
 """
 
 
@@ -164,6 +171,11 @@ class	DequeFrame:
 class	Deque():
 	"""
 	the actual deque class used by TLC
+
+	indexing is zero-based from the oldest entry on the deque
+	negative indexes start with the newest entry at the bottom of the deque
+
+	attempts to access out of range result in IndexError being thrown
 	"""
 
 
@@ -295,6 +307,9 @@ class	Deque():
 		removes the oldest value from the deque and return it
 		"""
 
+		if	self.isEmpty():
+			raise IndexError
+
 		payload = self._listFront.getPayload()
 
 		if	not self._listFront.isInactive():
@@ -313,6 +328,9 @@ class	Deque():
 		"""
 		removes the newest value from the deque and return it
 		"""
+
+		if	self.isEmpty():
+			raise IndexError
 
 		payload = self._listBack.getPayload()
 
@@ -351,7 +369,7 @@ class	Deque():
 			current = current.getPredecessor() if reverse else current.getSuccessor()
 
 		if	current.isInactive() or offset > 0:
-			return	default
+			raise IndexError
 
 		return	current.getPayload()
 
@@ -362,7 +380,7 @@ class	Deque():
 		"""
 		allows update on the entries on the deque; negative numbers start at the back of the deque (newest);
 		otherwise access is to next available entry
-		returns	True if the assignment fails, or False otherwise
+		throws IndexError if out of range
 		"""
 		if	offset < 0:
 			reverse = True
@@ -379,7 +397,7 @@ class	Deque():
 			current = current.getPredecessor() if reverse else current.getSuccessor()
 
 		if	current.isInactive() or offset > 0:
-			return	True
+			raise IndexError
 
 		current.setPayload(newPayload)
 		return	False
@@ -388,9 +406,9 @@ class	Deque():
 
 
 
-	def	frot(self, offset, default=None):
+	def	frot(self, offset):
 		"""
-		rotate entries down into the deque, or up from the deque
+		rotate entries down into the deque, or up from the deque from the
 		(positive numbers rotate down into the seque; negative number up from the deque)
 		"""
 
@@ -399,6 +417,9 @@ class	Deque():
 		else:
 			rotateUP = True
 			offset = abs(offset)
+
+		if	len(self) <= offset:
+			raise IndexError
 
 		target = self._listFront
 		current = target
@@ -448,10 +469,10 @@ class	Deque():
 
 
 
-	def	rrot(self, offset, default=None):
+	def	rrot(self, offset):
 		"""
 		reverse rotate (from the back) entries down into the deque, or up from the deque
-		(positive numbers rotate down into the seque; negative number up from the deque)
+		(positive numbers rotate down into the deque; negative number up from the deque)
 		"""
 
 		if	offset > 0:
@@ -459,6 +480,9 @@ class	Deque():
 		else:
 			rotateUP = True
 			offset = abs(offset)
+
+		if	len(self) <= offset:
+			raise IndexError
 
 		target = self._listBack
 		current = target
