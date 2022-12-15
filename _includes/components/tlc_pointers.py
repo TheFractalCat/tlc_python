@@ -128,8 +128,6 @@ class TLCPointer:
 		mark the pointer as invalid
 		"""
 		self._invalidState = True
-		self.commit()
-
 		return	self
 
 
@@ -260,6 +258,6 @@ class TLCPointer:
 			return False
 
 		else:
-			return self._variables == target._variables
+			return	(self.objectID == target.objectID) and (self.offset == target.offset) and (self.isNull() == target.isNull()) and (self.isInvalid() == target.isInvalid())
 
 
