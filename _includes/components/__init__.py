@@ -15,6 +15,7 @@ from .deque import *
 from .registers import *
 from .object_memory import *
 from .processor import *
+from .tlc_pointers import *
 
 
 
@@ -28,4 +29,5 @@ __all__ = [
 	*registers.__all__,
 	*object_memory.__all__,
 	*processor.__all__,
+	*tlc_pointers.__all__,
 	]
